@@ -8,6 +8,21 @@ from .typings.invoice_types import Invoice
 
 
 def parse_ledes_file(file: TextIO, ledes_format: str) -> List[Invoice]:
+    """
+    Parses a LEDES file based on the provided format and returns a list of Invoice objects.
+
+    :param file: A file-like object (TextIO) containing the LEDES data to parse.
+    :param ledes_format: A string specifying the LEDES format of the input data.
+                         Supported formats are "1998", "1998B", and "1998BI".
+    :raises ValueError: If an unsupported format is provided.
+    :return: A list of Invoice objects representing the parsed invoice data.
+
+    Usage:
+    ```
+    with open('path/to/your/ledes_file.txt', 'r') as f:
+        reader = csv.reader(f, delimiter="|")
+        invoices = parse_ledes_file(reader, '1998')
+    """
     parser = None
     if ledes_format == '1998':
         parser = Ledes1998Parser()
