@@ -12,7 +12,7 @@ pip install ledes-parser
 ```python
 from ledes_parser import parse_ledes_file
 
-with open('tests/sample_data.txt', 'r') as f:
+with open('path/to/the/ledes_file.txt', 'r') as f:
     reader = csv.reader(f, delimiter="|")
     invoices = parse_ledes_file(reader, "1998")
     print(invoices)
