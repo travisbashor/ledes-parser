@@ -35,17 +35,6 @@ jobs:
     - name: Build package
       run: python -m build
 
-    - name: Increment package version
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        version=$(cat VERSION)
-        new_version=$(echo "$version + 0.01" | bc)
-        echo $new_version > VERSION
-        git add VERSION
-        git commit -m "Increment package version"
-        git push
-
     - name: Publish package
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
