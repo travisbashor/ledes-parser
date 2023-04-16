@@ -1,6 +1,4 @@
-<your_package_name> and other placeholders with your actual package information.
 # ledes-parser
-
 A package for parsing LEDES format files.
 
 ## Installation
