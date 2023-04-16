@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 def read_version():
-    return '0.2.2'
+    return '0.2.3'
     # with open("./VERSION", "r") as version_file:
     #     return version_file.read().strip()
 
