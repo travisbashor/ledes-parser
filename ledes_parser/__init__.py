@@ -18,9 +18,8 @@ def parse_ledes_file(file: TextIO, ledes_format: str) -> List[Invoice]:
 
     Usage:
     ```
-    with open('path/to/your/ledes_file.txt', 'r') as f:
-        reader = csv.reader(f, delimiter="|")
-        invoices = parse_ledes_file(reader, '1998')
+    with open('path/to/ledes_file.txt', 'r') as f:
+        invoices = parse_ledes_file(f, '1998')
     """
     parser = None
     if ledes_format == '1998B':
