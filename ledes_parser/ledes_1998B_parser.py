@@ -1,6 +1,6 @@
 from typing import List, TextIO
 
-from base_ledes_parser import BaseLedesParser
+from ledes_parser.base_ledes_parser import BaseLedesParser
 
 from .typings.invoice_types import Invoice
 

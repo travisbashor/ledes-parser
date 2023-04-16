@@ -1,6 +1,9 @@
 from typing import List, TextIO
-from base_ledes_parser import BaseLedesParser
+
+from ledes_parser.base_ledes_parser import BaseLedesParser
+
 from .typings.invoice_types import Invoice
+
 
 class Ledes1998Parser(BaseLedesParser):
     def parse(self, reader: TextIO) -> List[Invoice]:
@@ -11,8 +14,6 @@ class Ledes1998Parser(BaseLedesParser):
                 continue
 
             record_type = row[0]
-
-
 
             if record_type == 'INVOICE':
                 invoice = {

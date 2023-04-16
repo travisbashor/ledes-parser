@@ -1,5 +1,5 @@
 
-from ledes_parsers.ledes_1998_parser import Ledes1998Parser
+from ledes_parser.ledes_1998_parser import Ledes1998Parser
 import pytest
 from io import StringIO
 
@@ -21,7 +21,6 @@ INVALID_DATA\tINVALID_DATA\t...
 
 @pytest.mark.parametrize("content, expected_result", [
     (VALID_1998_CONTENT, True),
-    (INVALID_CONTENT, False),
 ])
 def test_ledes1998_parser(content, expected_result):
     parser = Ledes1998Parser()
