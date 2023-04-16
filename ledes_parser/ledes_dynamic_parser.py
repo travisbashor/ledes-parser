@@ -3,6 +3,9 @@ from typing import List, TextIO
 
 from .typings.invoice_types import Invoice
 
+field_to_property_map = {
+  'INVOICE_DATE': 'invoice_date'
+}
 
 class DynamicLEDESParser:
     def __init__(self, format_file: str):
