@@ -13,7 +13,7 @@ pip install ledes-parser
 from ledes_parser import parse_ledes_file
 
 with open('path/to/the/ledes_file.txt', 'r') as f:
-    invoices = parse_ledes_file(f, "1998")
+    invoices = parse_ledes_file(f, "1998B")
     print(invoices)
 ```
 
