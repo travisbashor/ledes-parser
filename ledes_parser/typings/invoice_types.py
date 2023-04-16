@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List, TypedDict
 
 class LineItem(TypedDict):
@@ -12,6 +13,6 @@ class LineItem(TypedDict):
 class Invoice(TypedDict):
     invoice_number: str
     client_id: str
-    invoice_date: str
+    invoice_date: date
     invoice_total: float
     invoice_lines: List[LineItem]
