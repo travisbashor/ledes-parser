@@ -21,11 +21,11 @@ with open('path/to/the/ledes_file.txt', 'r') as f:
 This package supports the following LEDES file formats:
 
 * LEDES98B
-* LEDES98BI
-* LEDES98BIV2
-* LEDES2000
-* LEDESXML20
-* LEDESXML21
+* (TBD) LEDES98BI
+* (TBD) LEDES98BIV2
+* (TBD) LEDES2000
+* (TBD) LEDESXML20
+* (TBD) LEDESXML21
 
 # Contributing
 Fork the repository on GitHub.
