@@ -1,8 +1,12 @@
 from setuptools import setup, find_packages
 
+def read_version():
+    with open("VERSION", "r") as version_file:
+        return version_file.read().strip()
+
 setup(
     name='ledes-parser',
-    version='0.1',
+    version=read_version(),
     packages=find_packages(),
     install_requires=[
         # List your package dependencies here
