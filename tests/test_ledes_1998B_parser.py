@@ -14,14 +14,14 @@ INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_S
 """
 
 
-def test_ledes1998B_parser():
+def test_ledes1998B_parse_textio():
     parser = Ledes1998BParser()
     invoices = parser.parse(StringIO(VALID_1998B_DATA, newline='\n'))
 
     assert len(invoices) > 0
 
 
-def test_ledes1998B_parser_should_be_able_to_read_file():
+def test_ledes1998B_parser_should_parse_file():
     parser = Ledes1998BParser()
     with open(file="tests/ledes_98B_sample_file.txt", mode="r") as f:
         invoices = parser.parse(f)
