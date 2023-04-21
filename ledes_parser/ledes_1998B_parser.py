@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from enum import IntEnum
 import logging
 from typing import Iterable, List
 
@@ -8,7 +8,7 @@ from ledes_parser.base_ledes_parser import BaseLedesParser
 from .typings.invoice_types import Invoice, LineItem
 from csv import reader
 
-class Position(Enum):
+class Position(IntEnum):
     INVOICE_DATE = 0
     INVOICE_NUMBER = 1
     CLIENT_ID = 2
