@@ -5,6 +5,7 @@ from ledes_parser.ledes_1998BI_parser import Ledes1998BIParser
 
 from .typings.invoice_types import Invoice
 
+__version__ = "develop"
 
 def parse_ledes_file(file: TextIO, ledes_format: str) -> List[Invoice]:
     """
