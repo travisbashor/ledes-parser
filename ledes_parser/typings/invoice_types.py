@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List
+from typing import Iterable
 
 
 class LineItem():
@@ -27,7 +27,7 @@ class Invoice():
     invoice_date: date
     invoice_description: str
     invoice_total: float
-    line_items: List[LineItem]
+    line_items: Iterable[LineItem]
     law_firm_matter_id: str
     billing_start_date: date
     billing_end_date: date
@@ -36,5 +36,12 @@ class Invoice():
         self.line_items = list()
 
     def add_line_item(self, line_item: LineItem) -> None:
-      # TODO: Validation that there aren't duplicate line item numbers.
-      self.line_items.append(line_item)
+        # TODO: Validation that there aren't duplicate line item numbers.
+        self.line_items.append(line_item)
+
+    def is_valid(self) -> bool:
+        # The sum of all line items totals should be within 1% of the invoice total.
+        total_of_line_items = sum(li.line_item_total for li in self.line_items)
+        tolerance = 0.01  # +-1%
+
+        return self.invoice_total * (1.00 - tolerance) <= total_of_line_items <= self.invoice_total * (1.00 + tolerance)
