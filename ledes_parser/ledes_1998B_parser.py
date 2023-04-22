@@ -41,15 +41,19 @@ class Ledes1998BParser(BaseLedesParser):
         csv_reader = reader(csv_data, delimiter="|")
 
         # First line contains the ledes format.
-        next(csv_reader)
+        LEDES_FORMAT_SPECIFIER = 'LEDES1998B[]'
+        ledes_format = next(csv_reader)
+        assert ledes_format[0] == LEDES_FORMAT_SPECIFIER, f"Unexpected format: '{ledes_format}'"
 
         # Second line contains the column headers.
         next(csv_reader)
 
-        row_number = 2 # Where the first record is
+        row_number = 2 # Where the first invoice record is located.
         for row in csv_reader:
             row_number += 1
             # Parse invoice according to https://ledes.org/ledes-98b-format/#
+
+            # Skip empty rows.
             if not row:
                 continue
 
