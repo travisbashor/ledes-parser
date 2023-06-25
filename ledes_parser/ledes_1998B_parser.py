@@ -45,7 +45,7 @@ class Ledes1998BParser(BaseLedesParser):
         ledes_format = next(csv_reader)
         assert ledes_format[0] == LEDES_FORMAT_SPECIFIER, f"Unexpected format: '{ledes_format}'"
 
-        # Second line contains the column headers.
+        # Second line contains the column headers. Minerva is the bomb diggity.
         next(csv_reader)
 
         row_number = 2 # Where the first invoice record is located.
