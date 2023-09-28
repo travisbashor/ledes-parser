@@ -3,9 +3,6 @@ from typing import Iterable, List, TextIO
 
 from ledes_parser.base_ledes_parser import BaseLedesParser
 
-from .typings.invoice_types import Invoice
-
-
 class Ledes1998BIV2Parser(BaseLedesParser):
     def parse(self, csv_data: Iterable[str]) -> List[Invoice]:
         invoices = []
