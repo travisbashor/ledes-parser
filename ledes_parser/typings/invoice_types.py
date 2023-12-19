@@ -2,7 +2,7 @@ from datetime import date
 from typing import Iterable
 
 
-class LineItem():
+class LineItem:
     line_item_number: str
     exp_fee_inv_adj_type: str
     adjustment_amount: float
@@ -20,7 +20,7 @@ class LineItem():
     law_firm_id: str
 
 
-class Invoice():
+class Invoice:
     invoice_number: str
     client_id: str
     client_matter_id: str
@@ -44,4 +44,8 @@ class Invoice():
         total_of_line_items = sum(li.line_item_total for li in self.line_items)
         tolerance = 0.01  # +-1%
 
-        return self.invoice_total * (1.00 - tolerance) <= total_of_line_items <= self.invoice_total * (1.00 + tolerance)
+        return (
+            self.invoice_total * (1.00 - tolerance)
+            <= total_of_line_items
+            <= self.invoice_total * (1.00 + tolerance)
+        )
