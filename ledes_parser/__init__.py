@@ -7,6 +7,7 @@ from .typings.invoice_types import Invoice
 
 __version__ = "develop"
 
+
 def parse_ledes_file(file: TextIO, ledes_format: str) -> List[Invoice]:
     """
     Parses a LEDES file based on the provided format and returns a list of Invoice objects.
@@ -23,11 +24,11 @@ def parse_ledes_file(file: TextIO, ledes_format: str) -> List[Invoice]:
         invoices = parse_ledes_file(f, '1998')
     """
     parser = None
-    if ledes_format == '1998B':
+    if ledes_format == "1998B":
         parser = Ledes1998BParser()
-    elif ledes_format == '1998BI':
+    elif ledes_format == "1998BI":
         parser = Ledes1998BIParser()
     else:
-        raise ValueError(f'Unsupported format: {ledes_format}')
+        raise ValueError(f"Unsupported format: {ledes_format}")
 
     return parser.parse(file)
