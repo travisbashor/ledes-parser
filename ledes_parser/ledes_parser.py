@@ -19,11 +19,12 @@ def get_parser() -> Lark:
     return Lark(grammar=ledes_98B_grammar, start="start", parser="lalr")
 
 
-def main() -> None:
+def show_ledes_file_data() -> None:
     ledes_98B_parser = get_parser()
     parse_tree = ledes_98B_parser.parse(SAMPLE_LEDES)
     print(parse_tree.pretty())
 
 
 if __name__ == "__main__":
-    main()
+    # Parse a ledes 98B file and show what was parsed out for each token.
+    show_ledes_file_data()
