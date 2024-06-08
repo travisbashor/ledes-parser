@@ -1,0 +1,130 @@
+start: spec headers line_item+
+spec: /LEDES1998B\[\]/
+headers: header_invoice_date PIPE header_invoice_number PIPE header_client_id PIPE header_law_firm_matter_id PIPE header_line_item_number PIPE header_exp_fee_inv_adj_type PIPE header_line_item_description PIPE header_line_item_amount PIPE header_line_item_tax_rate PIPE header_line_item_tax_type PIPE header_line_item_task_code PIPE header_line_item_expense_code PIPE header_timekeeper_id PIPE header_timekeeper_level PIPE header_line_item_unit_cost PIPE header_line_item_quantity PIPE header_line_item_adjustment_amount PIPE header_line_item_total PIPE header_line_item_date PIPE header_law_firm_id PIPE header_billing_start_date PIPE header_billing_end_date PIPE header_invoice_description PIPE header_billing_contact PIPE header_client_matter_id PIPE header_timekeeper_name PIPE header_timekeeper_classification PIPE header_timekeeper_hourly_rate LINE_ENDING
+line_item: invoice_date PIPE invoice_number PIPE client_id PIPE law_firm_matter_id PIPE line_item_number PIPE exp_fee_inv_adj_type PIPE line_item_description PIPE line_item_amount PIPE line_item_tax_rate PIPE line_item_tax_type PIPE line_item_task_code PIPE line_item_expense_code PIPE timekeeper_id PIPE timekeeper_level PIPE line_item_unit_cost PIPE line_item_quantity PIPE line_item_adjustment_amount PIPE line_item_total PIPE line_item_date PIPE law_firm_id PIPE billing_start_date PIPE billing_end_date PIPE invoice_description PIPE billing_contact PIPE client_matter_id PIPE timekeeper_name PIPE timekeeper_classification PIPE timekeeper_hourly_rate LINE_ENDING
+
+// Headers
+header_invoice_date: HEADER_INVOICE_DATE
+header_invoice_number: HEADER_INVOICE_NUMBER
+header_client_id: HEADER_CLIENT_ID
+header_law_firm_matter_id: HEADER_LAW_FIRM_MATTER_ID
+header_line_item_number: HEADER_LINE_ITEM_NUMBER
+header_exp_fee_inv_adj_type: HEADER_EXP_FEE_INV_ADJ_TYPE
+header_line_item_description: HEADER_LINE_ITEM_DESCRIPTION
+header_line_item_amount: HEADER_LINE_ITEM_AMOUNT
+header_line_item_tax_rate: HEADER_LINE_ITEM_TAX_RATE
+header_line_item_tax_type: HEADER_LINE_ITEM_TAX_TYPE
+header_line_item_task_code: HEADER_LINE_ITEM_TASK_CODE
+header_line_item_expense_code: HEADER_LINE_ITEM_EXPENSE_CODE
+header_timekeeper_id: HEADER_TIMEKEEPER_ID
+header_timekeeper_level: HEADER_TIMEKEEPER_LEVEL
+header_line_item_unit_cost: HEADER_LINE_ITEM_UNIT_COST
+header_line_item_quantity: HEADER_LINE_ITEM_QUANTITY
+header_line_item_adjustment_amount: HEADER_LINE_ITEM_ADJUSTMENT_AMOUNT
+header_line_item_total: HEADER_LINE_ITEM_TOTAL
+header_line_item_date: HEADER_LINE_ITEM_DATE
+header_law_firm_id: HEADER_LAW_FIRM_ID
+header_billing_start_date: HEADER_BILLING_START_DATE
+header_billing_end_date: HEADER_BILLING_END_DATE
+header_invoice_description: HEADER_INVOICE_DESCRIPTION
+header_billing_contact: HEADER_BILLING_CONTACT
+header_client_matter_id: HEADER_CLIENT_MATTER_ID
+header_timekeeper_name: HEADER_TIMEKEEPER_NAME
+header_timekeeper_classification: HEADER_TIMEKEEPER_CLASSIFICATION
+header_timekeeper_hourly_rate: HEADER_TIMEKEEPER_HOURLY_RATE
+
+// Values
+invoice_date: INVOICE_DATE
+invoice_number: INVOICE_NUMBER
+client_id: CLIENT_ID
+law_firm_matter_id: LAW_FIRM_MATTER_ID
+line_item_number: LINE_ITEM_NUMBER
+exp_fee_inv_adj_type: EXP_FEE_INV_ADJ_TYPE
+line_item_description: LINE_ITEM_DESCRIPTION
+line_item_amount: LINE_ITEM_AMOUNT
+line_item_tax_rate: LINE_ITEM_TAX_RATE
+line_item_tax_type: LINE_ITEM_TAX_TYPE?
+line_item_task_code: LINE_ITEM_TASK_CODE?
+line_item_expense_code: LINE_ITEM_EXPENSE_CODE
+timekeeper_id: TIMEKEEPER_ID?
+timekeeper_level: TIMEKEEPER_LEVEL
+line_item_unit_cost: LINE_ITEM_UNIT_COST
+line_item_quantity: LINE_ITEM_QUANTITY
+line_item_adjustment_amount: LINE_ITEM_ADJUSTMENT_AMOUNT
+line_item_total: LINE_ITEM_TOTAL
+line_item_date: LINE_ITEM_DATE
+law_firm_id: LAW_FIRM_ID
+billing_start_date: BILLING_START_DATE
+billing_end_date: BILLING_END_DATE
+invoice_description: INVOICE_DESCRIPTION?
+billing_contact: BILLING_CONTACT
+client_matter_id: CLIENT_MATTER_ID
+timekeeper_name: TIMEKEEPER_NAME
+timekeeper_classification: TIMEKEEPER_CLASSIFICATION
+timekeeper_hourly_rate: TIMEKEEPER_HOURLY_RATE
+
+HEADER_INVOICE_DATE: /INVOICE_DATE/
+HEADER_INVOICE_NUMBER: /INVOICE_NUMBER/
+HEADER_CLIENT_ID: /CLIENT_ID/
+HEADER_LAW_FIRM_MATTER_ID: /LAW_FIRM_MATTER_ID/
+HEADER_LINE_ITEM_NUMBER: /LINE_ITEM_NUMBER/
+HEADER_EXP_FEE_INV_ADJ_TYPE: /EXP\/FEE\/INV_ADJ_TYPE/
+HEADER_LINE_ITEM_DESCRIPTION: /LINE_ITEM_DESCRIPTION/
+HEADER_LINE_ITEM_AMOUNT: /LINE_ITEM_AMOUNT/
+HEADER_LINE_ITEM_TAX_RATE: /LINE_ITEM_TAX_RATE/
+HEADER_LINE_ITEM_TAX_TYPE: /LINE_ITEM_TAX_TYPE/
+HEADER_LINE_ITEM_TASK_CODE: /LINE_ITEM_TASK_CODE/
+HEADER_LINE_ITEM_EXPENSE_CODE: /LINE_ITEM_EXPENSE_CODE/
+HEADER_TIMEKEEPER_ID: /TIMEKEEPER_ID/
+HEADER_TIMEKEEPER_LEVEL: /TIMEKEEPER_LEVEL/
+HEADER_LINE_ITEM_UNIT_COST: /LINE_ITEM_UNIT_COST/
+HEADER_LINE_ITEM_QUANTITY: /LINE_ITEM_QUANTITY/
+HEADER_LINE_ITEM_ADJUSTMENT_AMOUNT: /LINE_ITEM_ADJUSTMENT_AMOUNT/
+HEADER_LINE_ITEM_TOTAL: /LINE_ITEM_TOTAL/
+HEADER_LINE_ITEM_DATE: /LINE_ITEM_DATE/
+HEADER_LAW_FIRM_ID: /LAW_FIRM_ID/
+HEADER_BILLING_START_DATE: /BILLING_START_DATE/
+HEADER_BILLING_END_DATE: /BILLING_END_DATE/
+HEADER_INVOICE_DESCRIPTION: /INVOICE_DESCRIPTION/
+HEADER_BILLING_CONTACT: /BILLING_CONTACT/
+HEADER_CLIENT_MATTER_ID: /CLIENT_MATTER_ID/
+HEADER_TIMEKEEPER_NAME: /TIMEKEEPER_NAME/
+HEADER_TIMEKEEPER_CLASSIFICATION: /TIMEKEEPER_CLASSIFICATION/
+HEADER_TIMEKEEPER_HOURLY_RATE: /TIMEKEEPER_HOURLY_RATE/
+
+PIPE: /\|/
+LINE_ENDING: /\[\]/ // Every line has to end with []
+DATE_NUMBERS: /\d{4}\d{2}\d{2}/  // Matches YYYYMMDD format, e.g., 20240409
+ALPHANUMERIC: /[a-zA-Z0-9]{1,20}/
+INVOICE_DATE: DATE_NUMBERS
+INVOICE_NUMBER: /[a-zA-Z0-9\-]+/
+CLIENT_ID: /[a-zA-Z0-9\-]+/
+LAW_FIRM_MATTER_ID: /[a-zA-Z0-9\-]+/
+LINE_ITEM_NUMBER: /\d+/
+EXP_FEE_INV_ADJ_TYPE: /E|F|IF|IE/
+LINE_ITEM_DESCRIPTION: /[a-zA-Z0-9 _-]+/
+LINE_ITEM_AMOUNT: /\d+(\.\d{2})?/
+LINE_ITEM_TAX_RATE: /\d+(\.\d{2})?/
+LINE_ITEM_TAX_TYPE: /\w+/
+LINE_ITEM_TASK_CODE: /[A-Z0-9]+/
+LINE_ITEM_EXPENSE_CODE: /[A-Z0-9\-]+/
+TIMEKEEPER_ID: /[a-zA-Z0-9 _-]+/
+TIMEKEEPER_LEVEL: /[a-zA-Z0-9 _-]+/
+LINE_ITEM_UNIT_COST: /\d+(\.\d{2})?/
+LINE_ITEM_QUANTITY: /\d+/
+LINE_ITEM_ADJUSTMENT_AMOUNT: /\d+(\.\d{2})?/
+LINE_ITEM_TOTAL: /\d+(\.\d{2})?/
+LINE_ITEM_DATE: DATE_NUMBERS
+LAW_FIRM_ID: /[A-Z0-9\-]+/
+BILLING_START_DATE: DATE_NUMBERS
+BILLING_END_DATE: DATE_NUMBERS
+INVOICE_DESCRIPTION: /[a-zA-Z0-9 _-]+/
+BILLING_CONTACT: /[a-zA-Z0-9 _-]+/
+CLIENT_MATTER_ID: /[A-Z0-9\-]+/
+TIMEKEEPER_NAME: /[a-zA-Z0-9 _-]+/
+TIMEKEEPER_CLASSIFICATION: /[a-zA-Z0-9 _-]+/
+TIMEKEEPER_HOURLY_RATE: /\d+(\.\d{2})?/
+
+
+%import common.WS
+%ignore WS
