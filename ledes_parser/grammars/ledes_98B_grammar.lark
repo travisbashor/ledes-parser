@@ -1,7 +1,8 @@
-start: spec headers line_item+
-spec: /LEDES1998B\[\]/
-headers: header_invoice_date PIPE header_invoice_number PIPE header_client_id PIPE header_law_firm_matter_id PIPE header_line_item_number PIPE header_exp_fee_inv_adj_type PIPE header_line_item_description PIPE header_line_item_amount PIPE header_line_item_tax_rate PIPE header_line_item_tax_type PIPE header_line_item_task_code PIPE header_line_item_expense_code PIPE header_timekeeper_id PIPE header_timekeeper_level PIPE header_line_item_unit_cost PIPE header_line_item_quantity PIPE header_line_item_adjustment_amount PIPE header_line_item_total PIPE header_line_item_date PIPE header_law_firm_id PIPE header_billing_start_date PIPE header_billing_end_date PIPE header_invoice_description PIPE header_billing_contact PIPE header_client_matter_id PIPE header_timekeeper_name PIPE header_timekeeper_classification PIPE header_timekeeper_hourly_rate LINE_ENDING
-line_item: invoice_date PIPE invoice_number PIPE client_id PIPE law_firm_matter_id PIPE line_item_number PIPE exp_fee_inv_adj_type PIPE line_item_description PIPE line_item_amount PIPE line_item_tax_rate PIPE line_item_tax_type PIPE line_item_task_code PIPE line_item_expense_code PIPE timekeeper_id PIPE timekeeper_level PIPE line_item_unit_cost PIPE line_item_quantity PIPE line_item_adjustment_amount PIPE line_item_total PIPE line_item_date PIPE law_firm_id PIPE billing_start_date PIPE billing_end_date PIPE invoice_description PIPE billing_contact PIPE client_matter_id PIPE timekeeper_name PIPE timekeeper_classification PIPE timekeeper_hourly_rate LINE_ENDING
+?start: specification headers line_item+
+specification: LEDES_98B_SPEC _LINE_ENDING
+headers: header_invoice_date _PIPE header_invoice_number _PIPE header_client_id _PIPE header_law_firm_matter_id _PIPE header_line_item_number _PIPE header_exp_fee_inv_adj_type _PIPE header_line_item_description _PIPE header_line_item_amount _PIPE header_line_item_tax_rate _PIPE header_line_item_tax_type _PIPE header_line_item_task_code _PIPE header_line_item_expense_code _PIPE header_timekeeper_id _PIPE header_timekeeper_level _PIPE header_line_item_unit_cost _PIPE header_line_item_quantity _PIPE header_line_item_adjustment_amount _PIPE header_line_item_total _PIPE header_line_item_date _PIPE header_law_firm_id _PIPE header_billing_start_date _PIPE header_billing_end_date _PIPE header_invoice_description _PIPE header_billing_contact _PIPE header_client_matter_id _PIPE header_timekeeper_name _PIPE header_timekeeper_classification _PIPE header_timekeeper_hourly_rate _LINE_ENDING
+line_item: invoice_date _PIPE invoice_number _PIPE client_id _PIPE law_firm_matter_id _PIPE line_item_number _PIPE exp_fee_inv_adj_type _PIPE line_item_description _PIPE line_item_amount _PIPE line_item_tax_rate _PIPE line_item_tax_type _PIPE line_item_task_code _PIPE line_item_expense_code _PIPE timekeeper_id _PIPE timekeeper_level _PIPE line_item_unit_cost _PIPE line_item_quantity _PIPE line_item_adjustment_amount _PIPE line_item_total _PIPE line_item_date _PIPE law_firm_id _PIPE billing_start_date _PIPE billing_end_date _PIPE invoice_description _PIPE billing_contact _PIPE client_matter_id _PIPE timekeeper_name _PIPE timekeeper_classification _PIPE timekeeper_hourly_rate _LINE_ENDING
+
 
 // Headers
 header_invoice_date: HEADER_INVOICE_DATE
@@ -63,6 +64,7 @@ timekeeper_name: TIMEKEEPER_NAME
 timekeeper_classification: TIMEKEEPER_CLASSIFICATION
 timekeeper_hourly_rate: TIMEKEEPER_HOURLY_RATE
 
+LEDES_98B_SPEC: /LEDES1998B/
 HEADER_INVOICE_DATE: /INVOICE_DATE/
 HEADER_INVOICE_NUMBER: /INVOICE_NUMBER/
 HEADER_CLIENT_ID: /CLIENT_ID/
@@ -92,8 +94,8 @@ HEADER_TIMEKEEPER_NAME: /TIMEKEEPER_NAME/
 HEADER_TIMEKEEPER_CLASSIFICATION: /TIMEKEEPER_CLASSIFICATION/
 HEADER_TIMEKEEPER_HOURLY_RATE: /TIMEKEEPER_HOURLY_RATE/
 
-PIPE: /\|/
-LINE_ENDING: /\[\]/ // Every line has to end with []
+_PIPE: /\|/
+_LINE_ENDING: /\[\]/ // Every line has to end with []
 DATE_NUMBERS: /\d{4}\d{2}\d{2}/  // Matches YYYYMMDD format, e.g., 20240409
 ALPHANUMERIC: /[a-zA-Z0-9]{1,20}/
 INVOICE_DATE: DATE_NUMBERS
