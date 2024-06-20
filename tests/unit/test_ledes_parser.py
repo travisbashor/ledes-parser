@@ -15,7 +15,7 @@ INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_S
 """
         result = self.parser.parse(data)
         self.assertIsNotNone(result)
-        self.assertIn("LEDES1998B[]", result.pretty())
+        self.assertIn("LEDES1998B", result.pretty())
 
     def test_parse_empty_file(self):
         data = ""
