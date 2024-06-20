@@ -6,15 +6,15 @@ def main() -> None:
 
     setup(
         name="ledes-parser",
-        version=app.__version__,
-        packages=find_packages(),
-        install_requires=[
-            # List your package dependencies here
-        ],
-        author="Travis Bashor",
-        author_email="travis.bashor@gmail.com",
         description="A package for parsing LEDES format files",
         url="https://github.com/travisbashor/ledes-parser",
+        author="Travis Bashor",
+        author_email="travis.bashor@gmail.com",
+        version=app.__version__,
+        packages=find_packages(),
+        include_package_data=True,
+        package_data={"ledes_parser": ["grammars/*.lark"]},
+        install_requires=["lark-parser==0.12.0"],
     )
 
 

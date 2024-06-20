@@ -1,3 +1,4 @@
+import pkg_resources
 from lark import Lark
 
 SAMPLE_LEDES: str = """
@@ -13,7 +14,10 @@ def get_parser() -> Lark:
     @returns A parser that can read ledes 98B text.
     """
     # Load the ledes 98B grammar and return a parser for it.
-    with open("./grammars/ledes_98B_grammar.lark") as grammar_file:
+    path_to_grammar = pkg_resources.resource_filename(
+        __name__, "grammars/ledes_98B_grammar.lark"
+    )
+    with open(path_to_grammar) as grammar_file:
         ledes_98B_grammar = grammar_file.read()
 
     return Lark(grammar=ledes_98B_grammar, start="start", parser="lalr")
