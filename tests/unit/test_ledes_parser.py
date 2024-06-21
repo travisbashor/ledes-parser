@@ -5,7 +5,7 @@ from ledes_parser.ledes_parser import get_parser
 
 class TestLedes98BParser(unittest.TestCase):
     def setUp(self):
-        self.parser = get_parser()
+        self.parser = get_parser(spec="98B")
 
     def test_parse_valid_data(self):
         data = """
