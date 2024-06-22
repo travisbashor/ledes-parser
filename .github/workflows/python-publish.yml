@@ -42,7 +42,7 @@ jobs:
           fi
 
           # Define the pattern to match the version string
-          VERSION_PATTERN='__version__ = "\d+\.\d+\.\d+"'
+          VERSION_PATTERN='__version__ = "\d\.\d\.\d"'
 
           # Ensure the version pattern exists in the file
           if ! grep -q "$VERSION_PATTERN" "$VERSION_FILE"; then
