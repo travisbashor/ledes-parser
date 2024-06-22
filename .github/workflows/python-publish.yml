@@ -28,14 +28,30 @@ jobs:
 
       - name: Autobump version
         run: |
-          # Parse '1.2.3' from 'refs/tags/v1.2.3'
+          # Parse the version number from the tag.
           VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
-          PLACEHOLDER='__version__ = "develop"'
           VERSION_FILE='ledes_parser/__init__.py'
-          # ensure the placeholder is there. If grep doesn't find the placeholder
-          # it exits with exit code 1 and github actions aborts the build. 
-          grep "$PLACEHOLDER" "$VERSION_FILE"
-          sed -i "s/$PLACEHOLDER/__version__ = \"${VERSION}\"/g" "$VERSION_FILE"
+
+          # Parse the current version from the version file.
+          CURRENT_VERSION=$(grep -oP '(?<=__version__ = ")[^"]*' "$VERSION_FILE")
+
+          # Make sure the version in the tag and the version file match up.
+          if [ "$CURRENT_VERSION" == "$VERSION" ]; then
+              echo "Version in $VERSION_FILE is already $VERSION. No update needed."
+              exit 0
+          fi
+
+          # Define the pattern to match the version string
+          VERSION_PATTERN='__version__ = "\d+\.\d+\.\d+"'
+
+          # Ensure the version pattern exists in the file
+          if ! grep -q "$VERSION_PATTERN" "$VERSION_FILE"; then
+              echo "Version pattern not found in $VERSION_FILE"
+              exit 1
+          fi
+
+          # Replace the existing version string with the new version
+          sed -i "s/$VERSION_PATTERN/__version__ = \"${VERSION}\"/g" "$VERSION_FILE"
         shell: bash
 
       - name: Install dependencies
