@@ -1,7 +1,11 @@
 ?start: specification headers line_item+
 specification: LEDES_98B_SPEC _LINE_ENDING
 headers: header_invoice_date _PIPE header_invoice_number _PIPE header_client_id _PIPE header_law_firm_matter_id _PIPE header_invoice_total _PIPE header_billing_start_date _PIPE header_billing_end_date _PIPE header_invoice_description _PIPE header_line_item_number _PIPE header_exp_fee_inv_adj_type _PIPE header_line_item_number_of_units _PIPE header_line_item_adjustment_amount _PIPE header_line_item_total _PIPE header_line_item_date _PIPE header_line_item_task_code _PIPE header_line_item_expense_code _PIPE header_line_item_activity_code _PIPE header_timekeeper_id _PIPE header_line_item_description _PIPE header_law_firm_id _PIPE header_line_item_unit_cost _PIPE header_timekeeper_name _PIPE header_timekeeper_classification _PIPE header_client_matter_id _LINE_ENDING
-line_item: invoice_date _PIPE invoice_number _PIPE client_id _PIPE law_firm_matter_id _PIPE invoice_total _PIPE billing_start_date _PIPE billing_end_date _PIPE invoice_description _PIPE line_item_number _PIPE exp_fee_inv_adj_type _PIPE line_item_number_of_units _PIPE line_item_adjustment_amount _PIPE line_item_total _PIPE line_item_date _PIPE line_item_task_code _PIPE line_item_expense_code _PIPE line_item_activity_code _PIPE timekeeper_id _PIPE line_item_description _PIPE law_firm_id _PIPE line_item_unit_cost _PIPE timekeeper_name _PIPE timekeeper_classification _PIPE client_matter_id _LINE_ENDING
+line_item: fee | expense | invoice_level_fee_adjustment | invoice_level_expense_adjustment
+fee: invoice_date _PIPE invoice_number _PIPE client_id _PIPE law_firm_matter_id _PIPE invoice_total _PIPE billing_start_date _PIPE billing_end_date _PIPE invoice_description _PIPE line_item_number _PIPE F _PIPE line_item_number_of_units _PIPE line_item_adjustment_amount _PIPE line_item_total _PIPE line_item_date _PIPE line_item_task_code _PIPE line_item_expense_code _PIPE line_item_activity_code _PIPE timekeeper_id _PIPE line_item_description _PIPE law_firm_id _PIPE line_item_unit_cost _PIPE timekeeper_name _PIPE timekeeper_classification _PIPE client_matter_id _LINE_ENDING
+expense: invoice_date _PIPE invoice_number _PIPE client_id _PIPE law_firm_matter_id _PIPE invoice_total _PIPE billing_start_date _PIPE billing_end_date _PIPE invoice_description _PIPE line_item_number _PIPE E _PIPE line_item_number_of_units _PIPE line_item_adjustment_amount _PIPE line_item_total _PIPE line_item_date _PIPE line_item_task_code _PIPE line_item_expense_code _PIPE line_item_activity_code _PIPE timekeeper_id _PIPE line_item_description _PIPE law_firm_id _PIPE line_item_unit_cost _PIPE timekeeper_name _PIPE timekeeper_classification _PIPE client_matter_id _LINE_ENDING
+invoice_level_fee_adjustment: invoice_date _PIPE invoice_number _PIPE client_id _PIPE law_firm_matter_id _PIPE invoice_total _PIPE billing_start_date _PIPE billing_end_date _PIPE invoice_description _PIPE line_item_number _PIPE IF _PIPE line_item_number_of_units _PIPE line_item_adjustment_amount _PIPE line_item_total _PIPE line_item_date _PIPE line_item_task_code _PIPE line_item_expense_code _PIPE line_item_activity_code _PIPE timekeeper_id _PIPE line_item_description _PIPE law_firm_id _PIPE line_item_unit_cost _PIPE timekeeper_name _PIPE timekeeper_classification _PIPE client_matter_id _LINE_ENDING
+invoice_level_expense_adjustment: invoice_date _PIPE invoice_number _PIPE client_id _PIPE law_firm_matter_id _PIPE invoice_total _PIPE billing_start_date _PIPE billing_end_date _PIPE invoice_description _PIPE line_item_number _PIPE IE _PIPE line_item_number_of_units _PIPE line_item_adjustment_amount _PIPE line_item_total _PIPE line_item_date _PIPE line_item_task_code _PIPE line_item_expense_code _PIPE line_item_activity_code _PIPE timekeeper_id _PIPE line_item_description _PIPE law_firm_id _PIPE line_item_unit_cost _PIPE timekeeper_name _PIPE timekeeper_classification _PIPE client_matter_id _LINE_ENDING
 
 // Headers
 header_invoice_date: HEADER_INVOICE_DATE
@@ -54,34 +58,34 @@ timekeeper_name: TIMEKEEPER_NAME?
 timekeeper_classification: TIMEKEEPER_CLASSIFICATION?
 client_matter_id: CLIENT_MATTER_ID?
 
-LEDES_98B_SPEC: /LEDES1998B/
-HEADER_INVOICE_DATE: /INVOICE_DATE/
-HEADER_INVOICE_NUMBER: /INVOICE_NUMBER/
-HEADER_CLIENT_ID: /CLIENT_ID/
-HEADER_LAW_FIRM_MATTER_ID: /LAW_FIRM_MATTER_ID/
-HEADER_INVOICE_TOTAL: /INVOICE_TOTAL/
-HEADER_BILLING_START_DATE: /BILLING_START_DATE/
-HEADER_BILLING_END_DATE: /BILLING_END_DATE/
-HEADER_INVOICE_DESCRIPTION: /INVOICE_DESCRIPTION/
-HEADER_LINE_ITEM_NUMBER: /LINE_ITEM_NUMBER/
-HEADER_EXP_FEE_INV_ADJ_TYPE: /EXP\/FEE\/INV_ADJ_TYPE/
-HEADER_LINE_ITEM_NUMBER_OF_UNITS: /LINE_ITEM_NUMBER_OF_UNITS/
-HEADER_LINE_ITEM_ADJUSTMENT_AMOUNT: /LINE_ITEM_ADJUSTMENT_AMOUNT/
-HEADER_LINE_ITEM_TOTAL: /LINE_ITEM_TOTAL/
-HEADER_LINE_ITEM_DATE: /LINE_ITEM_DATE/
-HEADER_LINE_ITEM_TASK_CODE: /LINE_ITEM_TASK_CODE/
-HEADER_LINE_ITEM_EXPENSE_CODE: /LINE_ITEM_EXPENSE_CODE/
-HEADER_LINE_ITEM_ACTIVITY_CODE: /LINE_ITEM_ACTIVITY_CODE/
-HEADER_TIMEKEEPER_ID: /TIMEKEEPER_ID/
-HEADER_LINE_ITEM_DESCRIPTION: /LINE_ITEM_DESCRIPTION/
-HEADER_LAW_FIRM_ID: /LAW_FIRM_ID/
-HEADER_LINE_ITEM_UNIT_COST: /LINE_ITEM_UNIT_COST/
-HEADER_TIMEKEEPER_NAME: /TIMEKEEPER_NAME/
-HEADER_TIMEKEEPER_CLASSIFICATION: /TIMEKEEPER_CLASSIFICATION/
-HEADER_CLIENT_MATTER_ID: /CLIENT_MATTER_ID/
+LEDES_98B_SPEC: "LEDES1998B"
+HEADER_INVOICE_DATE: "INVOICE_DATE"
+HEADER_INVOICE_NUMBER: "INVOICE_NUMBER"
+HEADER_CLIENT_ID: "CLIENT_ID"
+HEADER_LAW_FIRM_MATTER_ID: "LAW_FIRM_MATTER_ID"
+HEADER_INVOICE_TOTAL: "INVOICE_TOTAL"
+HEADER_BILLING_START_DATE: "BILLING_START_DATE"
+HEADER_BILLING_END_DATE: "BILLING_END_DATE"
+HEADER_INVOICE_DESCRIPTION: "INVOICE_DESCRIPTION"
+HEADER_LINE_ITEM_NUMBER: "LINE_ITEM_NUMBER"
+HEADER_EXP_FEE_INV_ADJ_TYPE: "EXP/FEE/INV_ADJ_TYPE"
+HEADER_LINE_ITEM_NUMBER_OF_UNITS: "LINE_ITEM_NUMBER_OF_UNITS"
+HEADER_LINE_ITEM_ADJUSTMENT_AMOUNT: "LINE_ITEM_ADJUSTMENT_AMOUNT"
+HEADER_LINE_ITEM_TOTAL: "LINE_ITEM_TOTAL"
+HEADER_LINE_ITEM_DATE: "LINE_ITEM_DATE"
+HEADER_LINE_ITEM_TASK_CODE: "LINE_ITEM_TASK_CODE"
+HEADER_LINE_ITEM_EXPENSE_CODE: "LINE_ITEM_EXPENSE_CODE"
+HEADER_LINE_ITEM_ACTIVITY_CODE: "LINE_ITEM_ACTIVITY_CODE"
+HEADER_TIMEKEEPER_ID: "TIMEKEEPER_ID"
+HEADER_LINE_ITEM_DESCRIPTION: "LINE_ITEM_DESCRIPTION"
+HEADER_LAW_FIRM_ID: "LAW_FIRM_ID"
+HEADER_LINE_ITEM_UNIT_COST: "LINE_ITEM_UNIT_COST"
+HEADER_TIMEKEEPER_NAME: "TIMEKEEPER_NAME"
+HEADER_TIMEKEEPER_CLASSIFICATION: "TIMEKEEPER_CLASSIFICATION"
+HEADER_CLIENT_MATTER_ID: "CLIENT_MATTER_ID"
 
-_PIPE: /\|/
-_LINE_ENDING: /\[\]/ // Every line has to end with []
+_PIPE: "|"
+_LINE_ENDING: "[]" // Every line has to end with []
 YYYYMMDD: /\d{4}\d{2}\d{2}/  // Matches YYYYMMDD format, e.g., 20240409
 ALPHANUMERIC: /[a-zA-Z0-9]{1,20}/
 INVOICE_DATE: YYYYMMDD
@@ -90,7 +94,11 @@ CLIENT_ID: /[a-zA-Z0-9\-]+/
 LAW_FIRM_MATTER_ID: /[a-zA-Z0-9\-]+/
 INVOICE_TOTAL: /\d+(\.\d{2})?/
 LINE_ITEM_NUMBER: /\d+/
-EXP_FEE_INV_ADJ_TYPE: /E|F|IF|IE/
+E: "E" // Expense
+F: "F" // Fee
+IF: "IF" // Invoice-level adjustment to fees
+IE: "IE" // Invoice-level adjustment to expenses
+EXP_FEE_INV_ADJ_TYPE: E | F | IF | IE
 LINE_ITEM_NUMBER_OF_UNITS: /\d{1,10}(\.\d{0,4})?/ // 22, 55.6275, 0, 1.5
 LINE_ITEM_DESCRIPTION: /[a-zA-Z0-9 _\-'\,]+/
 LINE_ITEM_AMOUNT: /\d+(\.\d{2})?/

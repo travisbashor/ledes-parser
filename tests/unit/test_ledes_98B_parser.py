@@ -5,7 +5,7 @@ from ledes_parser.ledes_parser import get_parser
 
 class TestLedes98BParser(unittest.TestCase):
     def setUp(self):
-        self.parser = get_parser()
+        self.parser = get_parser(spec="98B")
 
     def test_parse_valid_data(self):
         data = """
@@ -15,7 +15,7 @@ INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_S
 """
         result = self.parser.parse(data)
         self.assertIsNotNone(result)
-        self.assertIn("LEDES1998B[]", result.pretty())
+        self.assertIn("LEDES1998B", result.pretty())
 
     def test_parse_empty_file(self):
         data = ""
