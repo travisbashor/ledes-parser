@@ -28,30 +28,15 @@ jobs:
 
       - name: Autobump version
         run: |
-          # Parse the version number from the tag.
+          # Extract the version number from the tag reference
           VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
           VERSION_FILE='ledes_parser/__init__.py'
 
-          # Parse the current version from the version file.
-          CURRENT_VERSION=$(grep -oP '(?<=__version__ = ")[^"]*' "$VERSION_FILE")
+          # Define the new version line
+          NEW_VERSION_LINE="__version__ = \"${VERSION}\""
 
-          # Make sure the version in the tag and the version file match up.
-          if [ "$CURRENT_VERSION" == "$VERSION" ]; then
-              echo "Version in $VERSION_FILE is already $VERSION. No update needed."
-              exit 0
-          fi
-
-          # Define the pattern to match the version string
-          VERSION_PATTERN='__version__ = "\d\.\d\.\d"'
-
-          # Ensure the version pattern exists in the file
-          if ! grep -q "$VERSION_PATTERN" "$VERSION_FILE"; then
-              echo "Version pattern not found in $VERSION_FILE"
-              exit 1
-          fi
-
-          # Replace the existing version string with the new version
-          sed -i "s/$VERSION_PATTERN/__version__ = \"${VERSION}\"/g" "$VERSION_FILE"
+          # Read the file, replace the version line, and write it back
+          awk -v new_version_line="$NEW_VERSION_LINE" '/^__version__ = / {$0=new_version_line} 1' "$VERSION_FILE" > temp && mv temp "$VERSION_FILE"
         shell: bash
 
       - name: Install dependencies
