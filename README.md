@@ -10,11 +10,14 @@ pip install ledes-parser
 ```
 # Example Usage
 ```python
-from ledes_parser import parse_ledes_file
+from ledes_parser.ledes_parser import get_parser
 
 with open('path/to/the/ledes_file.txt', 'r') as f:
-    invoices = parse_ledes_file(f, "1998B")
-    print(invoices)
+    ledes_data = f.read()
+
+parser = get_parser(spec="98B")
+result = parser.parse(ledes_data)
+print(result.pretty())
 ```
 
 # LEDES File Formats
