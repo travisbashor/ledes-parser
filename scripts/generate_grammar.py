@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from typing import List
 
 # from lark import Lark
@@ -18,8 +20,8 @@ def separated(tokens: List[str], separator_token_name: str = "_SEP") -> str:
     return f" {separator_token_name} ".join(tokens)
 
 
-def header_token(token_name: str) -> str:
-    return "header_" + token_name  # header_invoice_date, header_invoice_number, etc...
+def header(token_name: str) -> str:
+    return "header_" + token_name
 
 
 def literal(some_string: str) -> str:
@@ -34,13 +36,16 @@ def any_of(tokens: List[str]) -> str:
 def generate_grammar(spec: str, data_element_tokens: List[str]):
     start_rule = rule("?start", "specification headers line_item+")
 
-    specification_rule = rule(
-        "specification", line(literal(spec))
-    )  # "LEDES1998B[]", for example
+    # "LEDES1998B[]", for example
+    specification_rule = rule("specification", line(literal(spec)))
 
+    # header_invoice_date _SEP header_invoice_number _SEP header_...
     headers_rule = rule(
-        "headers", line(separated([header_token(t) for t in data_element_tokens]))
+        "headers", line(separated([header(t) for t in data_element_tokens]))
     )
+    header_tokens = [
+        (header(t).upper(), literal(t.upper())) for t in data_element_tokens
+    ]
 
     # line_item: fee | expense | invoice_level_fee_adjustment | invoice_level_expense_adjustment
     line_item_types = [
@@ -50,14 +55,17 @@ def generate_grammar(spec: str, data_element_tokens: List[str]):
         "invoice_level_expense_adjustment",
     ]
     line_item_rule = rule("line_item", line(any_of(line_item_types)))
+
     rules = [start_rule, specification_rule, headers_rule, line_item_rule]
     rule_definitions = "\n\n".join(rules)
     non_terminal_symbols = "\n".join(["// Non-terminal symbols"])
     terminal_symbols = "\n".join(
         [
             "// Terminal symbols",
-            rule("_LINE_ENDING", literal("[]")),
+            *[rule(token_name, token_defn) for token_name, token_defn in header_tokens],
+            rule("LEDES_98B_SPEC", literal("LEDES1998B")),
             rule("_SEP", literal("|")),
+            rule("_LINE_ENDING", literal("[]")),
         ]
     )
     directives = """
