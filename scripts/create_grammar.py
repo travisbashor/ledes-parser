@@ -32,46 +32,54 @@ def any_of(tokens: List[str]) -> str:
     return "(" + " | ".join(tokens) + ")"
 
 
-# Define a function to generate the grammar with given tokens.
-def generate_grammar(spec: str, data_element_tokens: List[str]):
+def create_headers() -> str:
+    ...
+
+
+def create_terminals() -> str:
+    ...
+
+
+def create_directives() -> str:
+    directives = ("%import common.WS", "%ignore WS")
+    return "\n".join(("// Directives", *directives))
+
+
+# Define a function to create the grammar with given tokens.
+def create_grammar(spec: str, tokens: List[str]):
     start_rule = rule("?start", "specification headers line_item+")
 
     # "LEDES1998B[]", for example
     specification_rule = rule("specification", line(literal(spec)))
 
     # header_invoice_date _SEP header_invoice_number _SEP header_...
-    headers_rule = rule(
-        "headers", line(separated([header(t) for t in data_element_tokens]))
-    )
-    header_tokens = [
-        (header(t).upper(), literal(t.upper())) for t in data_element_tokens
-    ]
+    headers_rule = rule("headers", line(separated([header(t) for t in tokens])))
+    header_tokens = [(header(t).upper(), literal(t.upper())) for t in tokens]
 
     # line_item: fee | expense | invoice_level_fee_adjustment | invoice_level_expense_adjustment
-    line_item_types = [
+    line_item_types = (
         "fee",
         "expense",
         "invoice_level_fee_adjustment",
         "invoice_level_expense_adjustment",
-    ]
+    )
     line_item_rule = rule("line_item", line(any_of(line_item_types)))
 
     rules = [start_rule, specification_rule, headers_rule, line_item_rule]
     rule_definitions = "\n\n".join(rules)
+
     non_terminal_symbols = "\n".join(["// Non-terminal symbols"])
     terminal_symbols = "\n".join(
         [
             "// Terminal symbols",
-            *[rule(token_name, token_defn) for token_name, token_defn in header_tokens],
-            rule("LEDES_98B_SPEC", literal("LEDES1998B")),
+            rule("LEDES_SPEC", literal(spec)),
             rule("_SEP", literal("|")),
             rule("_LINE_ENDING", literal("[]")),
+            *[rule(token_name, token_defn) for token_name, token_defn in header_tokens],
         ]
     )
-    directives = """
-%import common.WS
-%ignore WS
-    """
+
+    directives = create_directives()
 
     grammar = "\n\n".join(
         [rule_definitions, non_terminal_symbols, terminal_symbols, directives]
@@ -85,8 +93,8 @@ if __name__ == "__main__":
     tokens = ["invoice_date", "invoice_number"]
 
     # Generate the grammar
-    grammar = generate_grammar("1998B", tokens)
-    print(f"Generated Grammar:\n{grammar}")
+    grammar = create_grammar("LEDES1998B", tokens)
+    print(grammar)
 
     # # Create the parser
     # parser = Lark(grammar, parser="lalr")
