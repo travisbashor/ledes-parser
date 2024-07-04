@@ -22,9 +22,6 @@ class InvoiceDataFaker(Protocol):
     def law_firm_matter_id(self, length: int = 10) -> str:
         ...
 
-    def invoice_description(self) -> str:
-        ...
-
 
 class AlphanumericIDProvider(
     BaseProvider,
