@@ -2,10 +2,12 @@
 
 from typing import List
 
-# from lark import Lark
-
 LINE_ENDING_TOKEN_NAME = "_LINE_ENDING"
 SEPARATOR_TOKEN_NAME = "_SEP"
+
+
+def comment(comment: str) -> str:
+    return "// " + comment
 
 
 def rule(rule_name: str, rule_body: str) -> str:
@@ -47,12 +49,19 @@ def create_directives() -> str:
 
 # Define a function to create the grammar with given tokens.
 def create_grammar(spec: str, tokens: List[str]):
-    start_rule = rule("?start", "specification headers line_item+")
+    lines: List[str] = list()
+    lines.append(comment("LEDES1998B[]"))
+    lines.append(comment("INVOICE_DATE|INVOICE_NUMBER|...|CLIENT_MATTER_ID[]"))
+    lines.append(comment("20240209|ABC-123|...|CM-500[]"))
+
+    # Start rule; the entrypoint
+    lines.append(rule("?start", "specification headers line_item+"))
+    lines.append("")
 
     # "LEDES1998B[]", for example
-    specification_rule = rule("specification", line(literal(spec)))
+    ledes_version_rule = rule("specification", line(literal(spec)))
 
-    # header_invoice_date _SEP header_invoice_number _SEP header_...
+    # headers: header_invoice_date _SEP header_invoice_number _SEP header_...
     headers_rule = rule("headers", line(separated([header(t) for t in tokens])))
     header_tokens = [(header(t).upper(), literal(t.upper())) for t in tokens]
 
@@ -65,7 +74,7 @@ def create_grammar(spec: str, tokens: List[str]):
     )
     line_item_rule = rule("line_item", line(any_of(line_item_types)))
 
-    rules = [start_rule, specification_rule, headers_rule, line_item_rule]
+    rules = [ledes_version_rule, headers_rule, line_item_rule]
     rule_definitions = "\n\n".join(rules)
 
     non_terminal_symbols = "\n".join(["// Non-terminal symbols"])
@@ -89,7 +98,7 @@ def create_grammar(spec: str, tokens: List[str]):
 
 
 if __name__ == "__main__":
-    # List of tokens
+    # Example: List of tokens
     tokens = ["invoice_date", "invoice_number"]
 
     # Generate the grammar
@@ -97,10 +106,8 @@ if __name__ == "__main__":
     print(grammar)
 
     # # Create the parser
+    # from lark import Lark
     # parser = Lark(grammar, parser="lalr")
-
-    # # Example usage
-    # data = "A, B, C"
 
     # try:
     #     result = parser.parse(data)
