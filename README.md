@@ -1,5 +1,5 @@
 # ledes-parser
-A package for parsing LEDES format files.
+A package for parsing LEDES format files. Very much a WIP. DO NOT USE THIS FOR YOUR LEGAL INVOICING.
 
 ## Installation
 
