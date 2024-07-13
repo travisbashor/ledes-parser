@@ -36,7 +36,7 @@ def generate_invoice_description(invoice_number: str) -> str:
 
 
 def test_parse_ledes(parser: Lark, invoice_faker: Union[Faker, InvoiceDataFaker]):
-    fake = invoice_faker  # Alias to shorten it.
+    fake = invoice_faker  # Just to shorten it, while still not conflicting with the `faker` fixture.
 
     assert parser is not None
     assert fake is not None
