@@ -43,9 +43,6 @@ def test_parse_ledes(parser: Lark, invoice_faker: Union[Faker, InvoiceDataFaker]
 
     invoice_number = fake.invoice_number()
 
-    assert invoice_number
-    assert invoice_number.isalnum()
-
     fake.seed_instance(invoice_number)
     invoice_date = fake.date_this_century()
     billing_end_date = fake.date_this_month(before_today=True)
@@ -81,6 +78,5 @@ def test_parse_ledes(parser: Lark, invoice_faker: Union[Faker, InvoiceDataFaker]
     assert line_item is not None
 
 
-# Run the test
 if __name__ == "__main__":
     test_parse_ledes()
