@@ -72,7 +72,7 @@ ALPHANUMERIC: /[a-zA-Z0-9]{1,20}/
 INVOICE_DATE: YYYYMMDD
 INVOICE_NUMBER: /[a-zA-Z0-9\-]+/
 CLIENT_ID: /[a-zA-Z0-9\-]+/
-LAW_FIRM_MATTER_ID: /[a-zA-Z0-9\-]+/
+LAW_FIRM_MATTER_ID: /[a-zA-Z0-9\-\.]+/
 INVOICE_TOTAL: /\d+(\.\d{2})?/
 LINE_ITEM_NUMBER: /\d+/
 E: "E" // Expense
