@@ -16,8 +16,8 @@ INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_S
 """
         result = self.parser.parse(data)
         self.assertIsNotNone(result)
-        self.assertIn("+100.00", result.pretty())
-        self.assertIn("-100.00", result.pretty())
+        self.assertIn("For services rendered; other things", result.pretty())
+        self.assertIn("Trademark Filing; 1234", result.pretty())
 
     def test_can_parse_line_item_total_with_signs(self):
         data = """
