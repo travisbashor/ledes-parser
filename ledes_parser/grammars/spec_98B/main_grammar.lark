@@ -73,7 +73,7 @@ INVOICE_DATE: YYYYMMDD
 INVOICE_NUMBER: /[a-zA-Z0-9\-]+/
 CLIENT_ID: /[a-zA-Z0-9\-]+/
 LAW_FIRM_MATTER_ID: /[a-zA-Z0-9\-\.]+/
-INVOICE_TOTAL: /\d+(\.\d{2})?/
+INVOICE_TOTAL: /\d+(\.\d{0,4})?/
 LINE_ITEM_NUMBER: /\d+/
 E: "E" // Expense
 F: "F" // Fee
@@ -81,7 +81,7 @@ IF: "IF" // Invoice-level adjustment to fees
 IE: "IE" // Invoice-level adjustment to expenses
 EXP_FEE_INV_ADJ_TYPE: E | F | IF | IE
 LINE_ITEM_NUMBER_OF_UNITS: /\d{1,10}(\.\d{0,4})?/ // 22, 55.6275, 0, 1.5
-LINE_ITEM_DESCRIPTION: /[a-zA-Z0-9 _\-'\,]+/
+LINE_ITEM_DESCRIPTION: /[a-zA-Z0-9 _\-'\,\.]+/
 LINE_ITEM_AMOUNT: /\d+(\.\d{2})?/
 LINE_ITEM_TASK_CODE: /[A-Z0-9]+/
 LINE_ITEM_EXPENSE_CODE: /[A-Z0-9\-]+/
@@ -96,7 +96,7 @@ LINE_ITEM_DATE: YYYYMMDD
 LAW_FIRM_ID: /[A-Z0-9\-]+/
 BILLING_START_DATE: YYYYMMDD
 BILLING_END_DATE: YYYYMMDD
-INVOICE_DESCRIPTION: /[a-zA-Z0-9 _\-']+/
+INVOICE_DESCRIPTION: /[a-zA-Z0-9 _\-'\.]+/
 BILLING_CONTACT: /[a-zA-Z0-9 _\-]+/
 CLIENT_MATTER_ID: /[A-Z0-9\-]+/
 TIMEKEEPER_NAME: /[a-zA-Z0-9 _\-\,']+/
