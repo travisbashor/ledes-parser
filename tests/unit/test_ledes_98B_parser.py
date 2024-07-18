@@ -7,6 +7,18 @@ class TestLedes98BParser(unittest.TestCase):
     def setUp(self):
         self.parser = get_parser(spec="98B")
 
+    def test_can_parse_descriptions_with_semicolons(self):
+        data = """
+LEDES1998B[]
+INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_START_DATE|BILLING_END_DATE|INVOICE_DESCRIPTION|LINE_ITEM_NUMBER|EXP/FEE/INV_ADJ_TYPE|LINE_ITEM_NUMBER_OF_UNITS|LINE_ITEM_ADJUSTMENT_AMOUNT|LINE_ITEM_TOTAL|LINE_ITEM_DATE|LINE_ITEM_TASK_CODE|LINE_ITEM_EXPENSE_CODE|LINE_ITEM_ACTIVITY_CODE|TIMEKEEPER_ID|LINE_ITEM_DESCRIPTION|LAW_FIRM_ID|LINE_ITEM_UNIT_COST|TIMEKEEPER_NAME|TIMEKEEPER_CLASSIFICATION|CLIENT_MATTER_ID[]
+19990225|96542|555|555.900|1053|19990101|19990131|For services rendered; other things|1|E|1.000|+100.00|+100.00|19990115|L510||A102|22547|Trademark Filing|24-6437381|0.000|||423-987[]
+19990225|96542|555|555.900|1053|19990101|19990131|For services rendered|1|E|1.000|-100.00|-100.00|19990115|L510||A102|22547|Trademark Filing; 1234|24-6437381|0.000|||423-987[]
+"""
+        result = self.parser.parse(data)
+        self.assertIsNotNone(result)
+        self.assertIn("+100.00", result.pretty())
+        self.assertIn("-100.00", result.pretty())
+
     def test_can_parse_line_item_total_with_signs(self):
         data = """
 LEDES1998B[]
