@@ -99,9 +99,8 @@ BILLING_END_DATE: YYYYMMDD
 INVOICE_DESCRIPTION: /[a-zA-Z0-9 _\-'\.]+/
 BILLING_CONTACT: /[a-zA-Z0-9 _\-]+/
 CLIENT_MATTER_ID: /[A-Z0-9\-]+/
-TIMEKEEPER_NAME: /[a-zA-Z0-9 _\-\,']+/
+TIMEKEEPER_NAME: /[a-zA-Z0-9 _\-\,'\.]+/
 TIMEKEEPER_CLASSIFICATION: /[a-zA-Z0-9 _\-]+/
-TIMEKEEPER_HOURLY_RATE: /\d+(\.\d{2})?/
 
 _PIPE: "|"
 _LINE_ENDING: "[]" // Every line has to end with []
