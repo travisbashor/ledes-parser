@@ -1,11 +1,5 @@
 # This workflow will upload a Python Package using Twine when a release is created
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Upload Python Package
 
 on:
@@ -28,14 +22,14 @@ jobs:
 
       - name: Autobump version
         run: |
-          # Extract the version number from the tag reference
+          # Extract the version number from the tag reference.
           VERSION=$(echo $GITHUB_REF | sed 's#.*/v##')
           VERSION_FILE='ledes_parser/__init__.py'
 
-          # Define the new version line
+          # Define the new version line.
           NEW_VERSION_LINE="__version__ = \"${VERSION}\""
 
-          # Read the file, replace the version line, and write it back
+          # Read the file, replace the version line, and write it back.
           awk -v new_version_line="$NEW_VERSION_LINE" '/^__version__ = / {$0=new_version_line} 1' "$VERSION_FILE" > temp && mv temp "$VERSION_FILE"
         shell: bash
 
