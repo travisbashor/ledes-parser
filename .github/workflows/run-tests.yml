@@ -33,4 +33,4 @@ jobs:
           python -m pip install -r requirements-test.txt
 
       - name: Run Tests
-        run: pytest --show-statistics tests/
+        run: pytest -vv tests/
