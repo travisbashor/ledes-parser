@@ -31,4 +31,4 @@ jobs:
 
       - name: Lint with Ruff
         run: |
-          ruff --format=github --target-version=py39
+          ruff check --target-version=py39
