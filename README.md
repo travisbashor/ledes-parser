@@ -1,5 +1,7 @@
 # ledes-parser
-A package for parsing LEDES format files. Very much a WIP. DO NOT USE THIS FOR YOUR LEGAL INVOICING.
+A package for parsing LEDES format files. 
+
+Note: this is a WIP. DO NOT RELY ON THIS FOR YOUR LEGAL INVOICING.
 
 ## Installation
 
@@ -19,9 +21,10 @@ parser = get_parser(spec="98B")
 result = parser.parse(ledes_data)
 print(result.pretty())
 ```
+That produces a tokenized version of the ledes file. You can see an example of using a transformer to compile them into python in the /notebooks directory.
 
 # LEDES File Formats
-This package supports the following LEDES file formats:
+This package supports parsing the following LEDES file formats:
 
 * LEDES98B
 * (TBD) LEDES98BI
