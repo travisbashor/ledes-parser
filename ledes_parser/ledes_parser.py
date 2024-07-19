@@ -13,9 +13,14 @@ def get_parser(spec: str) -> Lark:
             f"Unrecognized ledes spec: '{spec}'. Supported specs are: {supported_specs}"
         )
     # By convention, the grammar for a spec is in: grammars/spec_<the-spec>/main_grammar.lark
-    folder_name = f"grammars/spec_{spec.upper()}/main_grammar.lark"
-    path_to_grammar = pkg_resources.resource_filename(__name__, folder_name)
+    main_grammar_file = f"grammars/spec_{spec.upper()}/main_grammar.lark"
+    path_to_grammar = pkg_resources.resource_filename(__name__, main_grammar_file)
+    import_paths = pkg_resources.resource_filename(
+        __name__, f"grammars/spec_{spec.upper()}"
+    )
     with open(path_to_grammar) as grammar_file:
         ledes_grammar = grammar_file.read()
 
-    return Lark(grammar=ledes_grammar, start="start", parser="lalr")
+    return Lark(
+        grammar=ledes_grammar, start="start", parser="lalr", import_paths=[import_paths]
+    )
