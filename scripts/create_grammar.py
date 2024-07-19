@@ -34,12 +34,10 @@ def any_of(tokens: List[str]) -> str:
     return "(" + " | ".join(tokens) + ")"
 
 
-def create_headers() -> str:
-    ...
+def create_headers() -> str: ...
 
 
-def create_terminals() -> str:
-    ...
+def create_terminals() -> str: ...
 
 
 def create_directives() -> str:
