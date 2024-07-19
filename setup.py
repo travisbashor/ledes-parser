@@ -11,7 +11,7 @@ def main() -> None:
         author="Travis Bashor",
         author_email="travis.bashor@gmail.com",
         version=app.__version__,
-        packages=find_packages(),
+        packages=find_packages(exclude=["tests*"]),
         include_package_data=True,
         package_data={"ledes_parser": ["grammars/**/*.lark"]},
         install_requires=["lark-parser==0.12.0"],
