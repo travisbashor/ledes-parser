@@ -21,7 +21,7 @@ parser = get_parser(spec="98B")
 result = parser.parse(ledes_data)
 print(result.pretty())
 ```
-That produces a tokenized version of the ledes file. You can see an example of using a transformer to compile them into python in the /notebooks directory.
+That produces a tokenized version of the ledes file (an abstract syntax tree). You can see an example of using a transformer to compile the AST into python in the /notebooks directory.
 
 # LEDES File Formats
 This package supports parsing the following LEDES file formats:
