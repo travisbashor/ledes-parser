@@ -18,9 +18,6 @@ def get_parser(spec: str) -> Lark:
     import_paths = pkg_resources.resource_filename(
         __name__, f"grammars/spec_{spec.upper()}"
     )
-    with open(path_to_grammar) as grammar_file:
-        ledes_grammar = grammar_file.read()
-
-    return Lark(
-        grammar=ledes_grammar, start="start", parser="lalr", import_paths=[import_paths]
+    return Lark.open(
+        path_to_grammar, start="start", parser="lalr", import_paths=[import_paths]
     )
