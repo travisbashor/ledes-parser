@@ -4,7 +4,7 @@ import pkg_resources
 from lark import Lark
 from lark.visitors import merge_transformers
 
-from ledes_parser.transformers.transformer_1998B import (
+from .transformers import (
     LEDES1998BTransformer,
     LineItemTransformer,
 )

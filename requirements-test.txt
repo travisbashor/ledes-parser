@@ -1,4 +1,4 @@
 -r requirements.txt
 
-pytest
-faker
+pytest==8.2.2
+faker==26.0.0
