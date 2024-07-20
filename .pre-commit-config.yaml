@@ -12,10 +12,6 @@ repos:
       - id: pyupgrade
         args:
           - '--py38-plus'
-  - repo: 'https://github.com/PyCQA/isort'
-    rev: 5.12.0
-    hooks:
-      - id: isort
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.5.3
