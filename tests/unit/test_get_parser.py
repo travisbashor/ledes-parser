@@ -1,10 +1,10 @@
 import pytest
 
+from ledes_parser import get_parser
 from ledes_parser.ledes_parser import (
     SUPPORTED_SPECS,
     UnrecognizedLEDESVersionError,
     UnsupportedLEDESVersionError,
-    get_parser,
 )
 
 

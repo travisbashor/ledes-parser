@@ -1,7 +1,8 @@
 # ledes-parser
-A package for parsing LEDES format files. 
+A package for parsing LEDES format files.
 
-Note: this is a WIP. DO NOT RELY ON THIS FOR YOUR LEGAL INVOICING.
+## Warning
+This is very much a work in progress. DO NOT RELY ON THIS FOR YOUR LEGAL INVOICING.
 
 ## Installation
 
@@ -12,7 +13,7 @@ pip install ledes-parser
 ```
 # Example Usage
 ```python
-from ledes_parser.ledes_parser import get_parser
+from ledes_parser import get_parser
 
 with open('path/to/the/ledes_file.txt', 'r') as f:
     ledes_data = f.read()

@@ -7,7 +7,7 @@ import pytest
 from faker import Faker
 from lark import Lark
 
-from ledes_parser.ledes_parser import get_parser
+from ledes_parser import get_parser
 from tests.conftest import InvoiceDataFaker
 
 

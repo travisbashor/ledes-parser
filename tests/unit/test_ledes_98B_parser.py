@@ -1,6 +1,6 @@
 import unittest
 
-from ledes_parser.ledes_parser import get_parser
+from ledes_parser import get_parser
 
 
 class LEDES1998BBuilder:
