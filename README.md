@@ -18,7 +18,7 @@ from ledes_parser import get_parser
 with open('path/to/the/ledes_file.txt', 'r') as f:
     ledes_data = f.read()
 
-parser = get_parser(spec="98B")
+parser = get_parser(spec="1998B")
 result = parser.parse(ledes_data)
 print(result.pretty())
 ```
