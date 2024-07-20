@@ -24,7 +24,7 @@ class UnsupportedLEDESVersionError(NotImplementedError):
     pass
 
 
-def get_parser(spec: SupportedSpecs, ast_only: bool = False) -> "Lark":
+def get_parser(spec: SupportedSpecs, ast_only: bool = False) -> Lark:
     """
     @returns A parser that can read ledes text in the given ledes spec (e.g., 1998B, 1998BI, etc...).
     @param ast_only: Whether the parser should return just the abstract syntax tree, instead of mapping the tokens to a dict.
