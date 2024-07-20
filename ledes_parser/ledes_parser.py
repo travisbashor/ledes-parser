@@ -10,7 +10,9 @@ from ledes_parser.transformers.transformer_1998B import (
 )
 
 SUPPORTED_SPECS = frozenset(["1998B"])
-LEDES_SPECS = frozenset(["1998B", "1998BI", "2000", "2020"])
+LEDES_SPECS = frozenset(
+    ["1998B", "1998BI", "1998BIV2", "2000", "2020", "XML20", "XML21"]
+)
 SupportedSpecs = Literal["1998B"]
 
 
