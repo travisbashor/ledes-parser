@@ -1,53 +1,12 @@
 import unittest
 
 from ledes_parser import get_parser
-
-
-class LEDES1998BBuilder:
-    def __init__(self):
-        self.header = "LEDES1998B[]\nINVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_START_DATE|BILLING_END_DATE|INVOICE_DESCRIPTION|LINE_ITEM_NUMBER|EXP/FEE/INV_ADJ_TYPE|LINE_ITEM_NUMBER_OF_UNITS|LINE_ITEM_ADJUSTMENT_AMOUNT|LINE_ITEM_TOTAL|LINE_ITEM_DATE|LINE_ITEM_TASK_CODE|LINE_ITEM_EXPENSE_CODE|LINE_ITEM_ACTIVITY_CODE|TIMEKEEPER_ID|LINE_ITEM_DESCRIPTION|LAW_FIRM_ID|LINE_ITEM_UNIT_COST|TIMEKEEPER_NAME|TIMEKEEPER_CLASSIFICATION|CLIENT_MATTER_ID[]\n"
-        self.lines = []
-
-    def add_line_item(self, **kwargs):
-        # This is a line item from the sample file for 98B from the LEDES website. Used as a base for testing.
-        sample_line = "19990225|96542|00711|0528|1684.45|19990101|19990131|For services rendered|1|F|2.00|-70|630|19990115|L510||A102|22547|Research Attorney's fees, Set off claim|24-6437381|350|Arnsley, Robert|PARTNR|423-987"
-        sample_values = sample_line.split("|")
-        line = [
-            kwargs.get("invoice_date", sample_values[0]),
-            kwargs.get("invoice_number", sample_values[1]),
-            kwargs.get("client_id", sample_values[2]),
-            kwargs.get("law_firm_matter_id", sample_values[3]),
-            kwargs.get("invoice_total", sample_values[4]),
-            kwargs.get("billing_start_date", sample_values[5]),
-            kwargs.get("billing_end_date", sample_values[6]),
-            kwargs.get("invoice_description", sample_values[7]),
-            kwargs.get("line_item_number", sample_values[8]),
-            kwargs.get("exp_fee_inv_adj_type", sample_values[9]),
-            kwargs.get("line_item_number_of_units", sample_values[10]),
-            kwargs.get("line_item_adjustment_amount", sample_values[11]),
-            kwargs.get("line_item_total", sample_values[12]),
-            kwargs.get("line_item_date", sample_values[13]),
-            kwargs.get("line_item_task_code", sample_values[14]),
-            kwargs.get("line_item_expense_code", sample_values[15]),
-            kwargs.get("line_item_activity_code", sample_values[16]),
-            kwargs.get("timekeeper_id", sample_values[17]),
-            kwargs.get("line_item_description", sample_values[18]),
-            kwargs.get("law_firm_id", sample_values[19]),
-            kwargs.get("line_item_unit_cost", sample_values[20]),
-            kwargs.get("timekeeper_name", sample_values[21]),
-            kwargs.get("timekeeper_classification", sample_values[22]),
-            kwargs.get("client_matter_id", sample_values[23]),
-        ]
-        self.lines.append("|".join(line) + "[]\n")
-        return self
-
-    def build(self):
-        return self.header + "".join(self.lines)
+from tests.conftest import LEDES1998BBuilder
 
 
 class TestLedes98BParser(unittest.TestCase):
     def setUp(self):
-        self.parser = get_parser(spec="1998B")
+        self.parser = get_parser(spec="1998B", ast_only=True)
         self.ledes_builder = LEDES1998BBuilder()
 
     def test_parse_valid_data(self):

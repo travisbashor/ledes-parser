@@ -2,9 +2,17 @@ from typing import Literal
 
 import pkg_resources
 from lark import Lark
+from lark.visitors import merge_transformers
+
+from ledes_parser.transformers.transformer_1998B import (
+    LEDES1998BTransformer,
+    LineItemTransformer,
+)
 
 SUPPORTED_SPECS = frozenset(["1998B"])
-LEDES_SPECS = frozenset(["1998B", "1998BI", "2000", "2020"])
+LEDES_SPECS = frozenset(
+    ["1998B", "1998BI", "1998BIV2", "2000", "2020", "XML20", "XML21"]
+)
 SupportedSpecs = Literal["1998B"]
 
 
@@ -16,9 +24,10 @@ class UnsupportedLEDESVersionError(NotImplementedError):
     pass
 
 
-def get_parser(spec: SupportedSpecs) -> Lark:
+def get_parser(spec: SupportedSpecs, ast_only: bool = False) -> Lark:
     """
     @returns A parser that can read ledes text in the given ledes spec (e.g., 1998B, 1998BI, etc...).
+    @param ast_only: Whether the parser should return just the abstract syntax tree, instead of mapping the tokens to a dict.
     """
     if spec not in LEDES_SPECS:
         raise UnrecognizedLEDESVersionError(
@@ -36,6 +45,19 @@ def get_parser(spec: SupportedSpecs) -> Lark:
     import_paths = pkg_resources.resource_filename(
         __name__, f"grammars/spec_{spec.upper()}"
     )
+    # For now, hard-coded to 98B.
+    transformer = (
+        merge_transformers(
+            base_transformer=LEDES1998BTransformer(), line_item=LineItemTransformer()
+        )
+        if not ast_only
+        else None
+    )
+
     return Lark.open(
-        path_to_grammar, start="start", parser="lalr", import_paths=[import_paths]
+        path_to_grammar,
+        start="start",
+        parser="lalr",
+        import_paths=[import_paths],
+        transformer=transformer,
     )
