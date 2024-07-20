@@ -12,7 +12,7 @@ To install the package, run:
 pip install ledes-parser
 ```
 # Example Usage
-The default lark transformer maps the ledes file into a simple python dict.
+The default transformer maps the ledes file into a simple python dict.
 
 ```python
 from ledes_parser import get_parser
