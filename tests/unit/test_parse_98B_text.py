@@ -13,7 +13,7 @@ from tests.conftest import InvoiceDataFaker
 
 @pytest.fixture(autouse=True, scope="session")
 def parser() -> Lark:
-    return get_parser("98B")
+    return get_parser(spec="1998B")
 
 
 def generate_invoice_description(invoice_number: str) -> str:
