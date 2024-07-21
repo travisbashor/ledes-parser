@@ -8,14 +8,16 @@ from ledes_parser.ledes_parser import (
 )
 
 
-def test_get_parser_with_unsupported_spec():
+def test_get_parser_unrecognized_spec_raises_unrecognized_error():
     with pytest.raises(
         UnrecognizedLEDESVersionError, match=r"not a known LEDES specification"
     ):
         get_parser(spec="a goose")
 
+
+def test_get_parser_unsupported_spec_raises_version_error():
     with pytest.raises(UnsupportedLEDESVersionError, match=r"has not been written yet"):
-        get_parser(spec="1998BI")
+        get_parser(spec="LEDES98BI")
 
 
 def test_get_parser_with_supported_spec():

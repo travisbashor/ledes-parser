@@ -1,7 +1,7 @@
 from typing import Literal
 
 import pkg_resources
-from lark import Lark
+from lark import Lark, Transformer
 from lark.visitors import merge_transformers
 
 from .transformers import (
@@ -9,11 +9,11 @@ from .transformers import (
     LineItemTransformer,
 )
 
-SUPPORTED_SPECS = frozenset(["1998B"])
+SUPPORTED_SPECS = frozenset(["LEDES98B"])
 LEDES_SPECS = frozenset(
-    ["1998B", "1998BI", "1998BIV2", "2000", "2020", "XML20", "XML21"]
+    ["LEDES98B", "LEDES98BI", "LEDES98BIV2", "LEDES2000", "LEDESXML20", "LEDESXML21"]
 )
-SupportedSpecs = Literal["1998B"]
+SupportedSpecs = Literal["LEDES98B"]
 
 
 class UnrecognizedLEDESVersionError(ValueError):
@@ -22,6 +22,15 @@ class UnrecognizedLEDESVersionError(ValueError):
 
 class UnsupportedLEDESVersionError(NotImplementedError):
     pass
+
+
+def get_transformer(spec: SupportedSpecs) -> Transformer:
+    if spec == "LEDES98B":
+        return merge_transformers(
+            base_transformer=LEDES1998BTransformer(), line_item=LineItemTransformer()
+        )
+    else:
+        return None
 
 
 def get_parser(spec: SupportedSpecs, ast_only: bool = False) -> Lark:
@@ -36,23 +45,15 @@ def get_parser(spec: SupportedSpecs, ast_only: bool = False) -> Lark:
 
     if spec not in SUPPORTED_SPECS:
         raise UnsupportedLEDESVersionError(
-            f"Cannot produce a parser. The grammar for LEDES {spec} has not been written yet. Supported specifications are: {SUPPORTED_SPECS}."
+            f"Cannot produce a parser. The grammar for {spec} has not been written yet. Supported specifications are: {SUPPORTED_SPECS}."
         )
 
-    # By convention, the grammar for a spec is in: grammars/spec_<the-spec>/main_grammar.lark
-    main_grammar_file = f"grammars/spec_{spec.upper()}/main_grammar.lark"
+    # By convention, the grammar for a spec is in: grammars/<the-spec>/main_grammar.lark
+    grammar_directory = f"grammars/{spec.upper()}"
+    main_grammar_file = f"{grammar_directory}/main_grammar.lark"
     path_to_grammar = pkg_resources.resource_filename(__name__, main_grammar_file)
-    import_paths = pkg_resources.resource_filename(
-        __name__, f"grammars/spec_{spec.upper()}"
-    )
-    # For now, hard-coded to 98B.
-    transformer = (
-        merge_transformers(
-            base_transformer=LEDES1998BTransformer(), line_item=LineItemTransformer()
-        )
-        if not ast_only
-        else None
-    )
+    import_paths = pkg_resources.resource_filename(__name__, grammar_directory)
+    transformer = get_transformer(spec) if not ast_only else None
 
     return Lark.open(
         path_to_grammar,

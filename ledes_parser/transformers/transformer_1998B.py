@@ -17,9 +17,9 @@ class LEDES1998BTransformer(Transformer):
         return str(t.value)
 
     def header_row(self, children):
-        return {
-            "header_row": "INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_START_DATE|BILLING_END_DATE|INVOICE_DESCRIPTION|LINE_ITEM_NUMBER|EXP/FEE/INV_ADJ_TYPE|LINE_ITEM_NUMBER_OF_UNITS|LINE_ITEM_ADJUSTMENT_AMOUNT|LINE_ITEM_TOTAL|LINE_ITEM_DATE|LINE_ITEM_TASK_CODE|LINE_ITEM_EXPENSE_CODE|LINE_ITEM_ACTIVITY_CODE|TIMEKEEPER_ID|LINE_ITEM_DESCRIPTION|LAW_FIRM_ID|LINE_ITEM_UNIT_COST|TIMEKEEPER_NAME|TIMEKEEPER_CLASSIFICATION|CLIENT_MATTER_ID"
-        }
+        # The headers must be in a static order anyway, so we can skip walking down to each one if we know parsing succeeded.
+        HEADERS = "INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_START_DATE|BILLING_END_DATE|INVOICE_DESCRIPTION|LINE_ITEM_NUMBER|EXP/FEE/INV_ADJ_TYPE|LINE_ITEM_NUMBER_OF_UNITS|LINE_ITEM_ADJUSTMENT_AMOUNT|LINE_ITEM_TOTAL|LINE_ITEM_DATE|LINE_ITEM_TASK_CODE|LINE_ITEM_EXPENSE_CODE|LINE_ITEM_ACTIVITY_CODE|TIMEKEEPER_ID|LINE_ITEM_DESCRIPTION|LAW_FIRM_ID|LINE_ITEM_UNIT_COST|TIMEKEEPER_NAME|TIMEKEEPER_CLASSIFICATION|CLIENT_MATTER_ID"
+        return {"headers": HEADERS.split("|")}
 
     def line_items(self, children):
         return {"line_items": children}
@@ -41,45 +41,52 @@ class LineItemTransformer(Transformer):
         # Ultimately validation is a chain of responsibility pattern going from ledes file -> fields for each line item -> line item -> invoice (maybe)
         return {k: v for d in children for k, v in d.items()}
 
-    def F(self, children):
-        return {"exp_fee_inv_adj_type": "F"}
+    def exp_fee_inv_adj_type(self, children):
+        (exp_fee_inv_adj_type,) = children or ("",)
+        return {"exp_fee_inv_adj_type": exp_fee_inv_adj_type}
 
-    def E(self, children):
-        return {"exp_fee_inv_adj_type": "E"}
+    def EXP_FEE_INV_ADJ_TYPE(self, children):
+        return str(children)
 
-    def IF(self, children):
-        return {"exp_fee_inv_adj_type": "IF"}
+    def FEE(self, t: Token):
+        return str(t.value)
 
-    def IE(self, children):
-        return {"exp_fee_inv_adj_type": "IE"}
+    def EXPENSE(self, t: Token):
+        return str(t.value)
+
+    def INVOICE_LEVEL_ADJUSTMENT_TO_FEES(self, t: Token):
+        return str(t.value)
+
+    def INVOICE_LEVEL_ADJUSTMENT_TO_EXPENSES(self, t: Token):
+        return str(t.value)
 
     def invoice_date(self, children):
         (invoice_date,) = children or ("",)
         return {"invoice_date": invoice_date}
 
     def INVOICE_DATE(self, t: Token):
-        return datetime.strptime(t.value, self._date_format)
+        return datetime.strptime(t.value, self._date_format).date()
 
     def billing_start_date(self, children):
         (billing_start_date,) = children or ("",)
         return {"billing_start_date": billing_start_date}
 
     def BILLING_START_DATE(self, t: Token):
-        return datetime.strptime(t.value, self._date_format)
+        return datetime.strptime(t.value, self._date_format).date()
 
     def billing_end_date(self, children):
         (billing_end_date,) = children or ("",)
         return {"billing_end_date": billing_end_date}
 
     def BILLING_END_DATE(self, t: Token):
-        return datetime.strptime(t.value, self._date_format)
+        return datetime.strptime(t.value, self._date_format).date()
 
     def line_item_date(self, children):
         (line_item_date,) = children or ("",)
         return {"line_item_date": line_item_date}
 
     def LINE_ITEM_DATE(self, t: Token):
-        return datetime.strptime(t.value, self._date_format)
+        return datetime.strptime(t.value, self._date_format).date()
 
     def client_id(self, children):
         (client_id,) = children or ("",)

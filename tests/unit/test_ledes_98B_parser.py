@@ -6,7 +6,7 @@ from tests.conftest import LEDES1998BBuilder
 
 class TestLedes98BParser(unittest.TestCase):
     def setUp(self):
-        self.parser = get_parser(spec="1998B", ast_only=True)
+        self.parser = get_parser(spec="LEDES98B", ast_only=True)
         self.ledes_builder = LEDES1998BBuilder()
 
     def test_parse_valid_data(self):

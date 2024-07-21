@@ -1,18 +1,28 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Any
+from typing import Any, Union
 
 import pytest
+from faker import Faker
 from lark import Lark
 
 from ledes_parser import get_parser
 from ledes_parser.transformers.transformer_1998B import LineItemTransformer
-from tests.conftest import LineItemBuilder1998B
+from tests.conftest import InvoiceDataFaker, LineItemBuilder1998B
+
+DATE_FORMAT = "%Y%m%d"
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def line_item_transformer() -> LineItemTransformer:
     return LineItemTransformer()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def parser_with_transformer() -> Lark:
+    return get_parser(
+        spec="LEDES98B", ast_only=False
+    )  # a parser with the transformer attached
 
 
 def test_transform_valid_line_item_succeeds(
@@ -33,13 +43,13 @@ def test_transform_valid_line_item_succeeds(
 @pytest.mark.parametrize(
     "field_name,token,expected_value",
     [
-        ("invoice_date", "20130423", datetime(2013, 4, 23)),
+        ("invoice_date", "20130423", datetime(2013, 4, 23).date()),
         ("invoice_number", "8675309", "8675309"),
         ("client_id", "ABC-900", "ABC-900"),
         ("law_firm_matter_id", "DEF000", "DEF000"),
         ("invoice_total", "5.00", Decimal("5.00")),
-        ("billing_start_date", "20240101", datetime(2024, 1, 1)),
-        ("billing_end_date", "20240131", datetime(2024, 1, 31)),
+        ("billing_start_date", "20240101", datetime(2024, 1, 1).date()),
+        ("billing_end_date", "20240131", datetime(2024, 1, 31).date()),
         (
             "invoice_description",
             "Some description. Might have spaces; might have punctuation!",
@@ -50,7 +60,7 @@ def test_transform_valid_line_item_succeeds(
         ("line_item_adjustment_amount", "+1.2", Decimal("+1.2")),
         ("line_item_adjustment_amount", "-1.2", Decimal("-1.2")),
         ("line_item_total", "55.00", Decimal("55.00")),
-        ("line_item_date", "20190504", datetime(2019, 5, 4)),
+        ("line_item_date", "20190504", datetime(2019, 5, 4).date()),
         ("line_item_task_code", "P220", "P220"),
         ("line_item_expense_code", "E101", "E101"),
         ("line_item_activity_code", "A101", "A101"),
@@ -80,8 +90,45 @@ def test_transform_maps_each_property(
     assert fee[field_name] == expected_value
 
 
+def test_transform_maps_valid_invoice_date(
+    line_item_builder: LineItemBuilder1998B,
+    line_item_parser: Lark,
+    line_item_transformer: LineItemTransformer,
+    invoice_faker: Union[Faker, InvoiceDataFaker],
+):
+    # Create 50 random dates and ensure they can all map.
+    for _ in range(50):
+        invoice_date = invoice_faker.date_this_century(before_today=True)
+        line_item_raw_text = line_item_builder.empty_line_item(
+            {"invoice_date": invoice_date.strftime(DATE_FORMAT)}
+        ).build()
+        line_item_ast = line_item_parser.parse(line_item_raw_text)
+
+        line_item = line_item_transformer.transform(line_item_ast)
+        assert line_item["invoice_date"] == invoice_date
+
+
+def test_transform_maps_valid_invoice_numbers(
+    line_item_builder: LineItemBuilder1998B,
+    line_item_parser: Lark,
+    line_item_transformer: LineItemTransformer,
+    invoice_faker: Union[Faker, InvoiceDataFaker],
+):
+    for _ in range(50):
+        fake_invoice_number = (
+            invoice_faker.invoice_number()
+        )  # a random alphanumeric invoice number between 1 and 20 characters.
+        line_item_raw_text = line_item_builder.empty_line_item(
+            {"invoice_number": fake_invoice_number}
+        ).build()
+        line_item_ast = line_item_parser.parse(line_item_raw_text)
+
+        line_item = line_item_transformer.transform(line_item_ast)
+        assert line_item["invoice_number"] == fake_invoice_number
+
+
 def test_transform_maps_valid_ledes_text():
-    parser_with_transformer = get_parser(spec="1998B", ast_only=False)
+    parser_with_transformer = get_parser(spec="LEDES98B", ast_only=False)
     valid_ledes_text = """
 LEDES1998B[]
 INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_START_DATE|BILLING_END_DATE|INVOICE_DESCRIPTION|LINE_ITEM_NUMBER|EXP/FEE/INV_ADJ_TYPE|LINE_ITEM_NUMBER_OF_UNITS|LINE_ITEM_ADJUSTMENT_AMOUNT|LINE_ITEM_TOTAL|LINE_ITEM_DATE|LINE_ITEM_TASK_CODE|LINE_ITEM_EXPENSE_CODE|LINE_ITEM_ACTIVITY_CODE|TIMEKEEPER_ID|LINE_ITEM_DESCRIPTION|LAW_FIRM_ID|LINE_ITEM_UNIT_COST|TIMEKEEPER_NAME|TIMEKEEPER_CLASSIFICATION|CLIENT_MATTER_ID[]

@@ -2,7 +2,7 @@ import os
 import random
 import string
 from decimal import Decimal
-from typing import List, Optional, Protocol, TypedDict
+from typing import List, Optional, Protocol, TypedDict, Union
 
 import pytest
 from faker import Faker
@@ -72,20 +72,29 @@ def to_dict(line_item_text: str) -> dict:
 
 class LineItemBuilder1998B:
     def __init__(self):
-        self.values = dict()
+        self.field_values = dict()
+
+    def empty_line_item(
+        self, values: Optional[LineItem1998B] = {}
+    ) -> "LineItemBuilder1998B":
+        empty_row = "|".join(["" for _ in HEADERS])
+        empty_line_item_data = to_dict(empty_row)
+        self.field_values.update(empty_line_item_data)
+        self.field_values.update(values)
+        return self
 
     def fee(self, values: Optional[LineItem1998B] = {}) -> "LineItemBuilder1998B":
         sample_fee = "19990225|96542|00711|0528|1684.45|19990101|19990131|For services rendered|1|F|2.00|-70|630|19990115|L510||A102|22547|Research Attorney's fees, Set off claim|24-6437381|350|Arnsley, Robert|PARTNR|423-987"
         fee_data = to_dict(sample_fee)
-        self.values.update(fee_data)
-        self.values.update(values)
+        self.field_values.update(fee_data)
+        self.field_values.update(values)
         return self
 
     def expense(self, values: Optional[LineItem1998B] = {}) -> "LineItemBuilder1998B":
         sample_expense = "19990225|96542|00711|0528|1684.45|19990101|19990131|For services rendered|4|E|1|0|24.95|19990117||E111|||Meals|24-6437381|24.95|||423-987"
         expense_data = to_dict(sample_expense)
-        self.values.update(expense_data)
-        self.values.update(values)
+        self.field_values.update(expense_data)
+        self.field_values.update(values)
         return self
 
     def invoice_level_adjustment_to_fees(
@@ -93,8 +102,8 @@ class LineItemBuilder1998B:
     ) -> "LineItemBuilder1998B":
         sample_fee_adjustment = "19990225|96543|00711|1326|1250|19990101|19990131|Monthly Retainer|6|IF|1|1250.|1250|19990131|||||Monthly Retainer Fee|24-6437381||||425-936"
         fee_adjustment_data = to_dict(sample_fee_adjustment)
-        self.values.update(fee_adjustment_data)
-        self.values.update(values)
+        self.field_values.update(fee_adjustment_data)
+        self.field_values.update(values)
         return self
 
     def invoice_level_adjustment_to_expenses(
@@ -102,12 +111,17 @@ class LineItemBuilder1998B:
     ) -> "LineItemBuilder1998B":
         sample_expense_adjustment = "19990225|96543|00711|1326|1250|19990101|19990131|Monthly Retainer|6|IE|1|1250.|1250|19990131|||||Monthly Retainer Fee|24-6437381||||425-936"
         expense_adjustment_data = to_dict(sample_expense_adjustment)
-        self.values.update(expense_adjustment_data)
-        self.values.update(values)
+        self.field_values.update(expense_adjustment_data)
+        self.field_values.update(values)
         return self
 
     def build(self) -> str:
-        return "|".join(self.values.values())
+        """
+        Returns the raw text of the line item and clears any accumulated values so it can be used again.
+        """
+        line_item_raw_text = "|".join(self.field_values.values())
+        self.field_values.clear()
+        return line_item_raw_text
 
 
 class LEDES1998BBuilder:
@@ -190,7 +204,7 @@ def fake_alphanumeric_id(length: int = 10) -> str:
 
 
 class InvoiceDataFaker(Protocol):
-    def invoice_number(self) -> str: ...
+    def invoice_number(self, length: int = 10) -> str: ...
 
     def client_id(self, length: int = 10) -> str: ...
 
@@ -211,14 +225,15 @@ class AlphanumericIDProvider(
 
 
 @pytest.fixture(scope="session", autouse=True)
-def invoice_faker() -> InvoiceDataFaker:
+def invoice_faker() -> Union[Faker, InvoiceDataFaker]:
     # Create a Faker instance and add custom providers
     fake = Faker()
     fake.add_provider(AlphanumericIDProvider)
     return fake
 
 
-@pytest.fixture(scope="function")
+# The parser may be session-scoped because parse() is idempotent.
+@pytest.fixture(scope="session")
 def line_item_parser():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     grammar_path = os.path.join(
@@ -226,10 +241,9 @@ def line_item_parser():
         "..",
         "ledes_parser",
         "grammars",
-        "spec_1998B",
+        "LEDES98B",
         "line_item.lark",
     )
-    print(grammar_path)
     return Lark.open(grammar_path)
 
 
