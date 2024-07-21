@@ -15,6 +15,13 @@ def line_item_transformer() -> LineItemTransformer:
     return LineItemTransformer()
 
 
+@pytest.fixture(scope="module", autouse=True)
+def parser_with_transformer() -> Lark:
+    return get_parser(
+        spec="1998B", ast_only=False
+    )  # a parser with the transformer attached
+
+
 def test_transform_valid_line_item_succeeds(
     line_item_parser: Lark,
     line_item_transformer: LineItemTransformer,
@@ -78,6 +85,28 @@ def test_transform_maps_each_property(
     # Attempt to map it into a python dict.
     fee = line_item_transformer.transform(fee_ast)
     assert fee[field_name] == expected_value
+
+
+@pytest.mark.parametrize(
+    "invoice_date_token,expected_date",
+    [
+        ("20130423", datetime(2013, 4, 23)),
+    ],
+)
+def test_transform_maps_valid_invoice_date(
+    invoice_date_token: str,
+    expected_date: datetime,
+    line_item_builder: LineItemBuilder1998B,
+    line_item_parser: Lark,
+    line_item_transformer: LineItemTransformer,
+):
+    line_item_raw_text = line_item_builder.empty_line_item(
+        {"invoice_date": invoice_date_token}
+    ).build()
+    line_item_ast = line_item_parser.parse(line_item_raw_text)
+
+    line_item = line_item_transformer.transform(line_item_ast)
+    assert line_item["invoice_date"] == expected_date
 
 
 def test_transform_maps_valid_ledes_text():
