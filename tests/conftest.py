@@ -2,7 +2,7 @@ import os
 import random
 import string
 from decimal import Decimal
-from typing import List, Optional, Protocol, TypedDict
+from typing import List, Optional, Protocol, TypedDict, Union
 
 import pytest
 from faker import Faker
@@ -116,7 +116,12 @@ class LineItemBuilder1998B:
         return self
 
     def build(self) -> str:
-        return "|".join(self.field_values.values())
+        """
+        Returns the raw text of the line item and clears any accumulated values so it can be used again.
+        """
+        line_item_raw_text = "|".join(self.field_values.values())
+        self.field_values.clear()
+        return line_item_raw_text
 
 
 class LEDES1998BBuilder:
@@ -199,7 +204,7 @@ def fake_alphanumeric_id(length: int = 10) -> str:
 
 
 class InvoiceDataFaker(Protocol):
-    def invoice_number(self) -> str: ...
+    def invoice_number(self, length: int = 10) -> str: ...
 
     def client_id(self, length: int = 10) -> str: ...
 
@@ -220,14 +225,15 @@ class AlphanumericIDProvider(
 
 
 @pytest.fixture(scope="session", autouse=True)
-def invoice_faker() -> InvoiceDataFaker:
+def invoice_faker() -> Union[Faker, InvoiceDataFaker]:
     # Create a Faker instance and add custom providers
     fake = Faker()
     fake.add_provider(AlphanumericIDProvider)
     return fake
 
 
-@pytest.fixture(scope="function")
+# The parser may be session-scoped because parse() is idempotent.
+@pytest.fixture(scope="session")
 def line_item_parser():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     grammar_path = os.path.join(
@@ -235,10 +241,9 @@ def line_item_parser():
         "..",
         "ledes_parser",
         "grammars",
-        "spec_1998B",
+        "LEDES98B",
         "line_item.lark",
     )
-    print(grammar_path)
     return Lark.open(grammar_path)
 
 
