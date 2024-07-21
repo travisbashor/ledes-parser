@@ -41,17 +41,21 @@ class LineItemTransformer(Transformer):
         # Ultimately validation is a chain of responsibility pattern going from ledes file -> fields for each line item -> line item -> invoice (maybe)
         return {k: v for d in children for k, v in d.items()}
 
-    def F(self, children):
-        return {"exp_fee_inv_adj_type": "F"}
+    def exp_fee_inv_adj_type(self, children):
+        (exp_fee_inv_adj_type,) = children or ("",)
+        return {"exp_fee_inv_adj_type": exp_fee_inv_adj_type}
 
-    def E(self, children):
-        return {"exp_fee_inv_adj_type": "E"}
+    def FEE(self, t: Token):
+        return str(t.value)
 
-    def IF(self, children):
-        return {"exp_fee_inv_adj_type": "IF"}
+    def EXPENSE(self, t: Token):
+        return str(t.value)
 
-    def IE(self, children):
-        return {"exp_fee_inv_adj_type": "IE"}
+    def INVOICE_LEVEL_ADJUSTMENT_TO_FEES(self, t: Token):
+        return str(t.value)
+
+    def INVOICE_LEVEL_ADJUSTMENT_TO_EXPENSES(self, t: Token):
+        return str(t.value)
 
     def invoice_date(self, children):
         (invoice_date,) = children or ("",)
