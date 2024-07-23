@@ -35,6 +35,21 @@ INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_S
         result = self.parser.parse(data)
         self.assertIsNotNone(result)
 
+    def test_parse_ignores_leading_and_trailing_whitespace(self):
+        lines = [
+            "LEDES1998B[]",
+            "INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|LAW_FIRM_MATTER_ID|INVOICE_TOTAL|BILLING_START_DATE|BILLING_END_DATE|INVOICE_DESCRIPTION|LINE_ITEM_NUMBER|EXP/FEE/INV_ADJ_TYPE|LINE_ITEM_NUMBER_OF_UNITS|LINE_ITEM_ADJUSTMENT_AMOUNT|LINE_ITEM_TOTAL|LINE_ITEM_DATE|LINE_ITEM_TASK_CODE|LINE_ITEM_EXPENSE_CODE|LINE_ITEM_ACTIVITY_CODE|TIMEKEEPER_ID|LINE_ITEM_DESCRIPTION|LAW_FIRM_ID|LINE_ITEM_UNIT_COST|TIMEKEEPER_NAME|TIMEKEEPER_CLASSIFICATION|CLIENT_MATTER_ID[]",
+            "  19990225   |96542|00711|0528|1684.45|19990101|19990131|   For services rendered    |1|F|2.00|-70|630|19990115|L510||A102|22547|Research Attorney's fees, Set off claim|24-6437381|350|Arnsley, Robert|PARTNR|423-987[]",
+        ]
+        data = "\n".join(lines)
+        result = self.parser.parse(data)
+        self.assertIsNotNone(result)
+        self.assertIn("19990225", result.pretty())
+        self.assertNotIn("  19990225   ", result.pretty())
+
+        self.assertIn("For services rendered", result.pretty())
+        self.assertNotIn("   For services rendered    ", result.pretty())
+
     def test_can_parse_valid_invoice_date(self):
         ledes_text = self.ledes_builder.add_line_item(invoice_date="20220101").build()
 
