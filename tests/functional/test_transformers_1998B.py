@@ -128,6 +128,23 @@ def test_transform_maps_valid_invoice_numbers(
         assert line_item["invoice_number"] == fake_invoice_number
 
 
+def test_transform_recognizes_lowercase_client_matter_ids(
+    line_item_builder: LineItemBuilder1998B,
+    line_item_parser: Lark,
+    line_item_transformer: LineItemTransformer,
+    invoice_faker: Union[Faker, InvoiceDataFaker],
+):
+    for _ in range(10):
+        fake_client_matter_id = invoice_faker.client_matter_id().lower()
+        line_item_raw_text = line_item_builder.empty_line_item(
+            {"client_matter_id": fake_client_matter_id}
+        ).build()
+        line_item_ast = line_item_parser.parse(line_item_raw_text)
+
+        line_item = line_item_transformer.transform(line_item_ast)
+        assert line_item["client_matter_id"] == fake_client_matter_id
+
+
 def test_transform_maps_line_item_types_ignoring_case():
     parser_with_transformer = get_parser(spec="LEDES98B", ast_only=False)
 
