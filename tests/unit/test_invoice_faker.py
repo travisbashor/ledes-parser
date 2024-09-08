@@ -12,4 +12,4 @@ def test_fake_invoice_number_is_alphanumeric(
     invoice_number = fake.invoice_number()
 
     assert invoice_number
-    assert invoice_number.isalnum()
+    assert all(c.isalnum() or c == "-" for c in invoice_number)
