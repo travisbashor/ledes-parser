@@ -1,0 +1,92 @@
+%import .line_item_base (line_item)
+
+// Entrypoint
+?start: line_item_bi
+
+// Non-terminal symbols
+line_item_bi: line_item _PIPE additional_bi_fields
+
+additional_bi_fields: miscellaneous_fields _PIPE law_firm_fields _PIPE client_fields _PIPE additional_tax_fields
+
+miscellaneous_fields: po_number _PIPE client_tax_id _PIPE matter_name _PIPE invoice_tax_total _PIPE invoice_net_total _PIPE invoice_currency _PIPE timekeeper_last_name _PIPE timekeeper_first_name _PIPE account_type
+po_number: PO_NUMBER?
+client_tax_id: CLIENT_TAX_ID?
+matter_name: MATTER_NAME?
+invoice_tax_total: INVOICE_TAX_TOTAL?
+invoice_net_total: INVOICE_NET_TOTAL?
+invoice_currency: INVOICE_CURRENCY?
+timekeeper_last_name: TIMEKEEPER_LAST_NAME?
+timekeeper_first_name: TIMEKEEPER_FIRST_NAME?
+account_type: ACCOUNT_TYPE?
+
+// Miscellaneous fields.
+PO_NUMBER: /[a-zA-Z0-9\-]+/
+CLIENT_TAX_ID: /[a-zA-Z0-9\-]+/
+MATTER_NAME: /[^|\n]+/
+INVOICE_TAX_TOTAL: /\d+(\.\d{0,8})?/
+INVOICE_NET_TOTAL: /\d+(\.\d{0,8})?/
+INVOICE_CURRENCY: _CURRENCY
+TIMEKEEPER_LAST_NAME: /[a-zA-Z0-9 _\-\,'\.]+/
+TIMEKEEPER_FIRST_NAME: /[a-zA-Z0-9 _\-\,'\.]+/
+ACCOUNT_TYPE: _OWN_ACCOUNT | _THIRD_PARTY_ACCOUNT
+_OWN_ACCOUNT: "O"i
+_THIRD_PARTY_ACCOUNT: "T"i
+_CURRENCY: /^AED|AFN|ALL|AMD|ANG|AOA|ARS|AUD|AWG|AZN|BAM|BBD|BDT|BGN|BHD|BIF|BMD|BND|BOB|BRL|BSD|BTN|BWP|BYR|BZD|CAD|CDF|CHF|CLP|CNY|COP|CRC|CUC|CUP|CVE|CZK|DJF|DKK|DOP|DZD|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GGP|GHS|GIP|GMD|GNF|GTQ|GYD|HKD|HNL|HRK|HTG|HUF|IDR|ILS|IMP|INR|IQD|IRR|ISK|JEP|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LYD|MAD|MDL|MGA|MKD|MMK|MNT|MOP|MRO|MUR|MVR|MWK|MXN|MYR|MZN|NAD|NGN|NIO|NOK|NPR|NZD|OMR|PAB|PEN|PGK|PHP|PKR|PLN|PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SPL|SRD|STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/
+
+// A consecutive group of fields describing the lawfirm, grouped for conciseness.
+law_firm_fields: law_firm_name _PIPE law_firm_address_1 _PIPE law_firm_address_2 _PIPE law_firm_city _PIPE law_firm_state_or_region _PIPE law_firm_postcode _PIPE law_firm_country
+law_firm_name: LAW_FIRM_NAME?
+law_firm_address_1: LAW_FIRM_ADDRESS_1?
+law_firm_address_2: LAW_FIRM_ADDRESS_2?
+law_firm_city: LAW_FIRM_CITY?
+law_firm_state_or_region: LAW_FIRM_STATE_OR_REGION?
+law_firm_postcode: LAW_FIRM_POSTCODE?
+law_firm_country: LAW_FIRM_COUNTRY?
+
+LAW_FIRM_NAME: /[^|\n]+/
+LAW_FIRM_ADDRESS_1: /[^|\n]+/
+LAW_FIRM_ADDRESS_2: /[^|\n]+/
+LAW_FIRM_CITY: /[^|\n]+/
+LAW_FIRM_STATE_OR_REGION: /[^|\n]+/
+LAW_FIRM_POSTCODE: /[^|\n]+/
+LAW_FIRM_COUNTRY: /[^|\n]+/
+
+// Client fields
+client_fields: client_name _PIPE client_address_1 _PIPE client_address_2 _PIPE client_city _PIPE client_state_or_region _PIPE client_postcode _PIPE client_country
+client_name: CLIENT_NAME?
+client_address_1: CLIENT_ADDRESS_1?
+client_address_2: CLIENT_ADDRESS_2?
+client_city: CLIENT_CITY?
+client_state_or_region: CLIENT_STATE_OR_REGION?
+client_postcode: CLIENT_POSTCODE?
+client_country: CLIENT_COUNTRY?
+
+CLIENT_NAME: /[^|\n]+/
+CLIENT_ADDRESS_1: /[^|\n]+/
+CLIENT_ADDRESS_2: /[^|\n]+/
+CLIENT_CITY: /[^|\n]+/
+CLIENT_STATE_OR_REGION: /[^|\n]+/
+CLIENT_POSTCODE: /[^|\n]+/
+CLIENT_COUNTRY: /[^|\n]+/
+
+// Additional tax fields
+additional_tax_fields: line_item_tax_rate _PIPE line_item_tax_total _PIPE line_item_tax_type _PIPE invoice_reported_tax_total _PIPE invoice_tax_currency
+
+line_item_tax_rate: LINE_ITEM_TAX_RATE?
+line_item_tax_total: LINE_ITEM_TAX_TOTAL?
+line_item_tax_type: LINE_ITEM_TAX_TYPE?
+invoice_reported_tax_total: INVOICE_REPORTED_TAX_TOTAL?
+invoice_tax_currency: INVOICE_TAX_CURRENCY?
+
+LINE_ITEM_TAX_RATE: /\d{1,10}(\.\d{0,8})?/
+LINE_ITEM_TAX_TOTAL: /\d{1,10}(\.\d{0,8})?/
+LINE_ITEM_TAX_TYPE: /[^|\n]+/
+INVOICE_REPORTED_TAX_TOTAL: /\d{1,10}(\.\d{0,8})?/
+INVOICE_TAX_CURRENCY: _CURRENCY
+
+_PIPE: "|"
+
+%import common.WS
+%import common.WS_INLINE
+%ignore WS
+%ignore WS_INLINE

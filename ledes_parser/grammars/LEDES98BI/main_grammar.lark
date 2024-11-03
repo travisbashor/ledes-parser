@@ -1,0 +1,45 @@
+%import .line_item (line_item_bi)
+
+start?: ledes_1998bi_file
+
+// LEDES98BI V2[]
+// INVOICE_DATE|INVOICE_NUMBER|CLIENT_ID|...|INVOICE_REPORTED_TAX_TOTAL|INVOICE_TAX_CURRENCY[]
+// 20080225|96542|711|...|182.52|GBP[]
+// ...
+ledes_1998bi_file: ledes_spec NEWLINE headers NEWLINE line_items
+ledes_spec: "LEDES98BI V2[]"
+headers:  _PIPE header_field ("|" header_field)*
+line_items: (line_item_bi _LINE_ENDING)+
+
+header_invoice_date: "INVOICE_DATE"
+header_invoice_number: "INVOICE_NUMBER"
+header_client_id: "CLIENT_ID"
+header_law_firm_matter_id: "LAW_FIRM_MATTER_ID"
+header_invoice_total: "INVOICE_TOTAL"
+header_billing_start_date: "BILLING_START_DATE"
+header_billing_end_date: "BILLING_END_DATE"
+header_invoice_description: "INVOICE_DESCRIPTION"
+header_line_item_number: "LINE_ITEM_NUMBER"
+header_exp_fee_inv_adj_type: "EXP/FEE/INV_ADJ_TYPE"
+header_line_item_number_of_units: "LINE_ITEM_NUMBER_OF_UNITS"
+header_line_item_adjustment_amount: "LINE_ITEM_ADJUSTMENT_AMOUNT"
+header_line_item_total: "LINE_ITEM_TOTAL"
+header_line_item_date: "LINE_ITEM_DATE"
+header_line_item_task_code: "LINE_ITEM_TASK_CODE"
+header_line_item_expense_code: "LINE_ITEM_EXPENSE_CODE"
+header_line_item_activity_code: "LINE_ITEM_ACTIVITY_CODE"
+header_timekeeper_id: "TIMEKEEPER_ID"
+header_line_item_description: "LINE_ITEM_DESCRIPTION"
+header_law_firm_id: "LAW_FIRM_ID"
+header_line_item_unit_cost: "LINE_ITEM_UNIT_COST"
+header_timekeeper_name: "TIMEKEEPER_NAME"
+header_timekeeper_classification: "TIMEKEEPER_CLASSIFICATION"
+header_client_matter_id: "CLIENT_MATTER_ID"
+
+// TODO: The rest of the headers.
+
+_PIPE: "|"
+
+%import common.WS
+%import common.NEWLINE
+%ignore WS
